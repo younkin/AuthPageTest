@@ -15,9 +15,11 @@ class AuthViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .blue
+        view.backgroundColor = AppColors.gray
         
-      
+        hideKeyboardWhenTappedAround()
+        customView?.emailTextField.delegate = self
+        customView?.passwordTextField.delegate = self
         
     }
     
@@ -29,3 +31,25 @@ class AuthViewController: UIViewController {
     }
     
 }
+//MARK: hide Keyboard 
+extension AuthViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(AuthViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+//MARK: textField Delegate
+extension AuthViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+}
+

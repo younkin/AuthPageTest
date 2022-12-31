@@ -19,6 +19,8 @@
 		74878BDF29609B980095349F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74878BBC296037BF0095349F /* LaunchScreen.storyboard */; };
 		74878BF02960AA1D0095349F /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BEF2960AA1D0095349F /* AuthViewModel.swift */; };
 		74878BF22960AC340095349F /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BF12960AC340095349F /* AuthView.swift */; };
+		74878BFA2960BB100095349F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 74878BF92960BB100095349F /* SnapKit */; };
+		74878BFD2960D45D0095349F /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BFC2960D45D0095349F /* AppColors.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,7 @@
 		74878BCF29608DF80095349F /* CoreDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataProvider.swift; sourceTree = "<group>"; };
 		74878BEF2960AA1D0095349F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		74878BF12960AC340095349F /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
+		74878BFC2960D45D0095349F /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74878BFA2960BB100095349F /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +56,7 @@
 		74878BA2296037BC0095349F = {
 			isa = PBXGroup;
 			children = (
+				74878BFB2960D4350095349F /* Helpers */,
 				74878BCC29608D740095349F /* New Group */,
 				74878BCB29608D0F0095349F /* Business Logic Layer */,
 				74878BEB2960A98A0095349F /* Present Player */,
@@ -133,6 +138,14 @@
 			path = AuthPage;
 			sourceTree = "<group>";
 		};
+		74878BFB2960D4350095349F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				74878BFC2960D45D0095349F /* AppColors.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -149,6 +162,9 @@
 			dependencies = (
 			);
 			name = AuthPageTest;
+			packageProductDependencies = (
+				74878BF92960BB100095349F /* SnapKit */,
+			);
 			productName = AuthPageTest;
 			productReference = 74878BAB296037BC0095349F /* AuthPageTest.app */;
 			productType = "com.apple.product-type.application";
@@ -177,6 +193,9 @@
 				Base,
 			);
 			mainGroup = 74878BA2296037BC0095349F;
+			packageReferences = (
+				74878BF82960BB100095349F /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 74878BAC296037BC0095349F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -207,6 +226,7 @@
 				74878BB9296037BC0095349F /* AuthPageTest.xcdatamodeld in Sources */,
 				74878BB3296037BC0095349F /* AuthViewController.swift in Sources */,
 				74878BC92960418D0095349F /* Person+CoreDataClass.swift in Sources */,
+				74878BFD2960D45D0095349F /* AppColors.swift in Sources */,
 				74878BAF296037BC0095349F /* AppDelegate.swift in Sources */,
 				74878BC62960383B0095349F /* CoreDataManager.swift in Sources */,
 				74878BF22960AC340095349F /* AuthView.swift in Sources */,
@@ -418,6 +438,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		74878BF82960BB100095349F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		74878BF92960BB100095349F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 74878BF82960BB100095349F /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		74878BB7296037BC0095349F /* AuthPageTest.xcdatamodeld */ = {
