@@ -16,73 +16,74 @@ class CoreDataProvider {
         
     }
     
-//    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
-//        let sortDescriptor = NSSortDescriptor(key: Constants.sortName, ascending: true)
-//        fetchRequest.sortDescriptors = [sortDescriptor]
-//        let fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.context, sectionNameKeyPath: nil, cacheName: nil)
-//        return fetchedResultController
-//    }()
+    enum Response {
+        case success
+        case fail
+    }
     
+    enum Error {
+        
+    }
+    
+    //    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
+    //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
+    //        let sortDescriptor = NSSortDescriptor(key: Constants.sortName, ascending: true)
+    //        fetchRequest.sortDescriptors = [sortDescriptor]
+    //        let fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.context, sectionNameKeyPath: nil, cacheName: nil)
+    //        return fetchedResultController
+    //    }()
     init() {
-    
-//        performFetch()
-        // извлекаем данные
         
-     
-
-//        if checkMailInBase(mail: "admin") {
-//            print(loginCheck(mail: "admin", password: "adminChanged"))
-//        } else {
-//            print("зарегистрируйся")
-//        }
-        
-
-//        print(changePassword(mail: "admin", password: "admin", newPassword: "adminChanged"))
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-
-   
-    func getAllUsers() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
-        
+    var fetchRequest: NSFetchRequest<NSFetchRequestResult> = {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
+        return fetchRequest
+    }()
+//    var person: [Person]?
+    
+    func getAllUsers() -> [Person] {
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-            for result in results as! [Person] {
-                print("mail - \(result.mail), password \(result.password)")
-            }
-            
+            let person = results as! [Person]
+            return person
         } catch {
             print(error)
         }
+        return []
+    }
+    
+    func addNewUser(email: String, password: String) -> Response {
+        let object = Person()
+        object.mail = email
+        object.password = password
+        CoreDataManager.instance.saveContext()
+        return Response.success
     }
     
     
-    func changePassword(mail:String, password:String , newPassword: String) -> Bool {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    func changePassword(mail:String, password:String , newPassword: String) -> Response {
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
             for result in results as! [Person] {
                 if result.mail == mail && result.password == password {
                     result.password = newPassword
                     CoreDataManager.instance.saveContext()
-                    return true
+                    return Response.success
                 }
             }
         } catch {
             print(error)
         }
-      
-        return false
+        
+        return Response.fail
     }
     
     func checkMailInBase(mail:String) -> Bool {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
             for result in results as! [Person] {
@@ -93,62 +94,55 @@ class CoreDataProvider {
         } catch {
             print(error)
         }
-      
         return false
     }
     
-//    func performFetch() {
-//        do {
-//            try fetchResultController.performFetch()
-//        } catch {
-//            print(error)
-//        }
-//    }
+    //    func performFetch() {
+    //        do {
+    //            try fetchResultController.performFetch()
+    //        } catch {
+    //            print(error)
+    //        }
+    //    }
     
-    func addNewUser(email: String, password: String) {
-        let manageObject = Person()
-        manageObject.mail = email
-        manageObject.password = password
-        CoreDataManager.instance.saveContext()
-        
-    }
-    
-    
-    func deleteAllUsers() {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    func deleteAllUsers() -> Response{
+
         do {
-                   let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-                   for result in results as! [NSManagedObject] {
-                       CoreDataManager.instance.context.delete(result)
-                   }
-               } catch {
-                       print(error)
-                   }
-               CoreDataManager.instance.saveContext()
+            let results = try CoreDataManager.instance.context.fetch(fetchRequest)
+            for result in results as! [NSManagedObject] {
+                CoreDataManager.instance.context.delete(result)
+                
+            }
+            CoreDataManager.instance.saveContext()
+            return Response.success
+        } catch {
+            print(error)
+        }
+        
+        return.fail
     }
     
     
     
-    func loginCheck(mail:String, password:String) -> Bool {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Person")
+    func loginCheck(mail:String, password:String) -> Response {
+
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
             for result in results as! [Person] {
                 if result.mail == mail && result.password == password {
-                    return true
-                } else {return false}
+                    return Response.success
+                }
             }
         } catch {
             print(error)
-            return false
         }
-        return false
+        return Response.fail
     }
-   
     
     
     
-    }
+    
+}
 
 
 
