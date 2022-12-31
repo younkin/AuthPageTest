@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import CoreData
 
 class ViewController: UIViewController {
-
+    
+    var coreDataProvider = CoreDataProvider()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .blue
+        
+        coreDataProvider.addNewUser(email: "123", password: "123")
+        coreDataProvider.getAllUsers()
+        
+        print("3223")
+        
     }
-
-
+    
 }
-
