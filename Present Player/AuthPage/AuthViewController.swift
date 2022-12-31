@@ -8,6 +8,11 @@
 import UIKit
 import CoreData
 
+struct EnteredData {
+    var mail: String
+    var password: String
+}
+
 class AuthViewController: UIViewController {
     
     var authViewModel = AuthViewModel()
@@ -18,9 +23,30 @@ class AuthViewController: UIViewController {
         view.backgroundColor = AppColors.gray
         
         hideKeyboardWhenTappedAround()
+        setDelegates()
+        
+        loginButton()
+    }
+    
+    
+    func setDelegates() {
         customView?.emailTextField.delegate = self
         customView?.passwordTextField.delegate = self
-        
+    }
+    
+    func loginButton() {
+        customView?.loginButtonTap = {
+            if self.customView?.emailTextField.text == "" {
+                self.customView?.statusLabel.text = "введите мейл"
+                return
+            }
+            if self.customView?.passwordTextField.text == "" {
+                self.customView?.statusLabel.text = "введите пароль"
+                return
+            }
+          
+            print("tap")
+        }
     }
     
     // MARK: - View lifecycle

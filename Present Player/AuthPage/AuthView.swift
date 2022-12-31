@@ -11,6 +11,8 @@ import SnapKit
 
 class AuthView: UIView {
     
+    var loginButtonTap: (() -> Void)?
+    
     private var loginIcon: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "loginIcon")
@@ -37,6 +39,7 @@ class AuthView: UIView {
         button.setTitleColor(AppColors.darkGray, for: .normal)
         button.backgroundColor = AppColors.orange
         button.setTitleColor(AppColors.brawn, for: .highlighted)
+        button.addTarget(self, action: #selector(logBattonTap), for: .touchUpInside)
         return button
     }()
     
@@ -56,7 +59,7 @@ class AuthView: UIView {
         return button
     }()
     
-    private var statusLabel: UILabel = {
+     var statusLabel: UILabel = {
       let label = UILabel()
         label.text = "введите email и пароль"
         label.textColor = AppColors.darkGray
@@ -82,6 +85,11 @@ class AuthView: UIView {
         makeRoundedItems()
       
     }
+    
+    @objc func logBattonTap() {
+        loginButtonTap?()
+    }
+    
     func makeRoundedItems() {
         
         loginButton.layer.cornerRadius = min(loginButton.layer.frame.width , loginButton.layer.frame.height) / 2
