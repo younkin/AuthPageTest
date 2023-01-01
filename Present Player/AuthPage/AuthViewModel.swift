@@ -18,6 +18,18 @@ class AuthViewModel {
     }
     
     
+    func login(mail:String, password: String) -> Bool {
+        
+       let response = coreDataProvider.loginCheck(mail: mail, password: password)
+        switch response {
+        case .success:
+            return true
+        case .fail:
+            return false
+        }
+       
+    }
+    
   
     
     

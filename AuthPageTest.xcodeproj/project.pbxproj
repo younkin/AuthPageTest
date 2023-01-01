@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		740C0EF729622C6600C5E077 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C0EF629622C6600C5E077 /* String + Extension.swift */; };
 		74878BAF296037BC0095349F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BAE296037BC0095349F /* AppDelegate.swift */; };
 		74878BB1296037BC0095349F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB0296037BC0095349F /* SceneDelegate.swift */; };
 		74878BB3296037BC0095349F /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB2296037BC0095349F /* AuthViewController.swift */; };
@@ -23,9 +24,11 @@
 		74878BFD2960D45D0095349F /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BFC2960D45D0095349F /* AppColors.swift */; };
 		74878C012961BE290095349F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C002961BE290095349F /* RegisterView.swift */; };
 		74878C032961BE5F0095349F /* RecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C022961BE5F0095349F /* RecoverView.swift */; };
+		74C3ECCE2961D4330094D247 /* LogedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C3ECCD2961D4330094D247 /* LogedInView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		740C0EF629622C6600C5E077 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		74878BAB296037BC0095349F /* AuthPageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthPageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74878BAE296037BC0095349F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74878BB0296037BC0095349F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +46,7 @@
 		74878BFC2960D45D0095349F /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		74878C002961BE290095349F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		74878C022961BE5F0095349F /* RecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverView.swift; sourceTree = "<group>"; };
+		74C3ECCD2961D4330094D247 /* LogedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogedInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,11 +61,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		740C0EF529622C3A00C5E077 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				740C0EF629622C6600C5E077 /* String + Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		74878BA2296037BC0095349F = {
 			isa = PBXGroup;
 			children = (
 				74878BFB2960D4350095349F /* Helpers */,
-				74878BCC29608D740095349F /* New Group */,
 				74878BCB29608D0F0095349F /* Business Logic Layer */,
 				74878BEB2960A98A0095349F /* Present Player */,
 				74878BAD296037BC0095349F /* AuthPageTest */,
@@ -93,16 +104,10 @@
 		74878BCB29608D0F0095349F /* Business Logic Layer */ = {
 			isa = PBXGroup;
 			children = (
+				740C0EF529622C3A00C5E077 /* Extensions */,
 				74878BCD29608DAA0095349F /* CoreData */,
 			);
 			path = "Business Logic Layer";
-			sourceTree = "<group>";
-		};
-		74878BCC29608D740095349F /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		74878BCD29608DAA0095349F /* CoreData */ = {
@@ -164,6 +169,7 @@
 			children = (
 				74878C002961BE290095349F /* RegisterView.swift */,
 				74878C022961BE5F0095349F /* RecoverView.swift */,
+				74C3ECCD2961D4330094D247 /* LogedInView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -246,9 +252,11 @@
 			files = (
 				74878BCA2960418D0095349F /* Person+CoreDataProperties.swift in Sources */,
 				74878BB9296037BC0095349F /* AuthPageTest.xcdatamodeld in Sources */,
+				740C0EF729622C6600C5E077 /* String + Extension.swift in Sources */,
 				74878BB3296037BC0095349F /* AuthViewController.swift in Sources */,
 				74878BC92960418D0095349F /* Person+CoreDataClass.swift in Sources */,
 				74878BFD2960D45D0095349F /* AppColors.swift in Sources */,
+				74C3ECCE2961D4330094D247 /* LogedInView.swift in Sources */,
 				74878BAF296037BC0095349F /* AppDelegate.swift in Sources */,
 				74878BC62960383B0095349F /* CoreDataManager.swift in Sources */,
 				74878BF22960AC340095349F /* AuthView.swift in Sources */,

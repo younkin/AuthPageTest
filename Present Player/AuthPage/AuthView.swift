@@ -9,10 +9,19 @@ import Foundation
 import UIKit
 import SnapKit
 
+//enum StatusState: String {
+//    case greating = "Вы успешно вошли"
+//    case wrongMail = ""
+//    case emptyMail = ""
+//    case emptyPassword = ""
+//}
+
 class AuthView: UIView {
     
     var loginButtonTapped: (() -> Void)?
     var regButtonTapped: (() -> Void)?
+    var recoveryButtonTapped: (() -> Void)?
+    
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -24,6 +33,8 @@ class AuthView: UIView {
         let textField = UITextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
+         let attr = NSAttributedString(string: "имейл", attributes: [.foregroundColor: AppColors.gray])
+         textField.attributedPlaceholder = attr
         return textField
     }()
     
@@ -31,6 +42,8 @@ class AuthView: UIView {
         let textField = UITextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
+         let attr = NSAttributedString(string: "пароль", attributes: [.foregroundColor: AppColors.gray])
+         textField.attributedPlaceholder = attr
         return textField
     }()
     
@@ -49,6 +62,8 @@ class AuthView: UIView {
         button.setTitle("Забыли пароль?", for: .normal)
         button.setTitleColor(AppColors.lightGray, for: .normal)
         button.setTitleColor(AppColors.brawn, for: .highlighted)
+        button.addTarget(self, action: #selector(recoveryButtonTap), for: .touchUpInside)
+
         return button
     }()
     private var regButton: UIButton = {
@@ -94,6 +109,9 @@ class AuthView: UIView {
     
     @objc func regButtonTap() {
         regButtonTapped?()
+    }
+    @objc func recoveryButtonTap() {
+        recoveryButtonTapped?()
     }
     
     

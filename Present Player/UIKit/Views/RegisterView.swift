@@ -11,7 +11,8 @@ import SnapKit
 
 class RegisterView: UIViewController {
     
-//    var loginButtonTap: (() -> Void)?
+    var regButtonTap: (() -> Void)?
+    
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -19,10 +20,19 @@ class RegisterView: UIViewController {
         return image
     }()
     
+    private var exitButton: UIButton = {
+        let button = UIButton(type: .close)
+        button.setTitleColor(AppColors.lightGray, for: .normal)
+        button.addTarget(self, action: #selector(exitTapped), for: .touchUpInside)
+        return button
+    }()
+    
      var emailTextField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
+         let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
+         textField.attributedPlaceholder = attr
         return textField
     }()
     
@@ -30,16 +40,26 @@ class RegisterView: UIViewController {
         let textField = UITextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
+         let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
+         textField.attributedPlaceholder = attr
         return textField
     }()
+    var repeatPasswordTextField: UITextField = {
+       let textField = UITextField()
+       textField.backgroundColor = AppColors.lightGray
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "повторите пароль", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
+               return textField
+   }()
     
-    private var loginButton: UIButton = {
+    private var regButton: UIButton = {
         let button = UIButton()
         button.setTitle("Регистрироваться", for: .normal)
         button.setTitleColor(AppColors.darkGray, for: .normal)
         button.backgroundColor = AppColors.orange
         button.setTitleColor(AppColors.brawn, for: .highlighted)
-        button.addTarget(self, action: #selector(logBattonTap), for: .touchUpInside)
+        button.addTarget(self, action: #selector(regСonfirm), for: .touchUpInside)
         return button
     }()
   
@@ -55,19 +75,27 @@ class RegisterView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.darkGray
+        
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
         makeConstraints()
         makeRoundedItems()
+        hideKeyboardWhenTappedAround()
+        
     }
-  
+    @objc func regСonfirm() {
+        regButtonTap?()
+    }
     
-    @objc func logBattonTap() {
-//        loginButtonTap?()
+    @objc func exitTapped() {
+
+        dismiss(animated: true)
     }
     
     func makeRoundedItems() {
         
-        loginButton.layer.cornerRadius = min(loginButton.layer.frame.width , loginButton.layer.frame.height) / 2
-        loginButton.layer.masksToBounds = true
+        regButton.layer.cornerRadius = min(regButton.layer.frame.width , regButton.layer.frame.height) / 2
+        regButton.layer.masksToBounds = true
         
        
         emailTextField.layer.cornerRadius = min(emailTextField.layer.frame.width , emailTextField.layer.frame.height) / 8
@@ -79,15 +107,21 @@ class RegisterView: UIViewController {
     }
     
     func makeConstraints() {
-        
+        view.addSubview(exitButton)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
-        view.addSubview(loginButton)
+        view.addSubview(repeatPasswordTextField)
+        view.addSubview(regButton)
     
         view.addSubview(statusLabel)
         view.addSubview(loginIcon)
         
-        
+        exitButton.snp.makeConstraints {
+            $0.top.equalTo(view.snp.top).offset(20)
+            $0.right.equalTo(view.snp.right).offset(-20)
+            $0.height.equalTo(30)
+            $0.width.equalTo(30)
+        }
 
         emailTextField.snp.makeConstraints {
             $0.center.equalTo(view.snp.center)
@@ -100,8 +134,14 @@ class RegisterView: UIViewController {
             $0.height.equalTo(30)
             $0.width.equalTo(view.snp.width).multipliedBy(0.7)
         }
-        loginButton.snp.makeConstraints {
-            $0.top.equalTo(passwordTextField.snp.bottom).offset(10)
+        repeatPasswordTextField.snp.makeConstraints {
+            $0.top.equalTo(passwordTextField.snp.bottom).inset(-10)
+            $0.centerX.equalTo(view.snp.centerX)
+            $0.height.equalTo(30)
+            $0.width.equalTo(view.snp.width).multipliedBy(0.7)
+        }
+        regButton.snp.makeConstraints {
+            $0.top.equalTo(repeatPasswordTextField.snp.bottom).offset(10)
             $0.width.equalTo(view.snp.width).multipliedBy(0.5)
             $0.centerX.equalTo(view.snp.centerX)
             $0.height.equalTo(30)
@@ -129,4 +169,28 @@ class RegisterView: UIViewController {
     
 }
 
+
+//MARK: hide Keyboard
+extension RegisterView {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(RegisterView.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
+
+//MARK: textField Delegate
+extension RegisterView: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+}
 

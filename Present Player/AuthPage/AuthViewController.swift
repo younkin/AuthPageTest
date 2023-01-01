@@ -17,6 +17,16 @@ class AuthViewController: UIViewController {
     
     var authViewModel = AuthViewModel()
     private lazy var customView = self.view as? AuthView
+    private lazy var registerView = RegisterView()
+    private lazy var recoveryView = RecoverView()
+    
+    
+    // MARK: - View lifecycle
+    override func loadView() {
+        super.loadView()
+        let view = AuthView()
+        self.view = view
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +37,9 @@ class AuthViewController: UIViewController {
         
         loginButton()
         regButton()
+        recoveryButton()
     }
+    
     
     
     func setDelegates() {
@@ -42,28 +54,67 @@ class AuthViewController: UIViewController {
     }
     
     func loginButton() {
-        customView?.loginButtonTapped = {
-            if self.customView?.emailTextField.text == "" {
+        self.customView?.loginButtonTapped = {
+            
+            //убираем опционал и проверяем на налицие текста в мейл
+            guard let emailText = self.customView?.emailTextField.text, !emailText.isEmpty else {
                 self.customView?.statusLabel.text = "введите мейл"
                 return
             }
-            if self.customView?.passwordTextField.text == "" {
+            //убираем опционал и проверяем на налицие текста в пароле
+            guard let passwordText = self.customView?.passwordTextField.text, !passwordText.isEmpty else {
                 self.customView?.statusLabel.text = "введите пароль"
                 return
             }
-          
-            print("tap")
+            
+            
+            // проверяем на валидность написания мейла
+            if !emailText.isValidEmailAddress() {
+                self.customView?.statusLabel.text = "введите правильный мейл"
+                return
+            }
+            
+            
+            // проверяем на валидность написания пароля
+            if !passwordText.matchesEnglishLettersAndNumbersFilter() {
+                    self.customView?.statusLabel.text = "пароль из англ букв и цифр"
+                    return
+                }
+            
+            
+            // запрос на сервер проверки логина
+            if self.authViewModel.login(mail: emailText, password: passwordText) {
+                let login = LogedInView()
+                self.present(login, animated: true)
+            } else {
+                self.customView?.statusLabel.text = "неверный пароль"
+            }
+            
+            
+            
+            
         }
     }
     
-    // MARK: - View lifecycle
-    override func loadView() {
-        super.loadView()
-        let view = AuthView()
-        self.view = view
+    
+    func registerButton() {
+        
     }
     
+    
+    func recoveryButton() {
+        customView?.recoveryButtonTapped = {
+            let recView = RecoverView()
+            self.present(recView, animated: true)
+        }
+    }
+    
+    
+    
+    
+    
 }
+
 //MARK: hide Keyboard 
 extension AuthViewController {
     func hideKeyboardWhenTappedAround() {
@@ -76,6 +127,7 @@ extension AuthViewController {
         view.endEditing(true)
     }
 }
+
 //MARK: textField Delegate
 extension AuthViewController: UITextFieldDelegate {
     

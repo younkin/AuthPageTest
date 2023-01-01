@@ -105,7 +105,7 @@ class CoreDataProvider {
     //        }
     //    }
     
-    func deleteAllUsers() -> Response{
+    func deleteAllUsers() -> Response {
 
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
