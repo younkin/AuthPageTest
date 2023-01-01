@@ -11,7 +11,8 @@ import SnapKit
 
 class AuthView: UIView {
     
-    var loginButtonTap: (() -> Void)?
+    var loginButtonTapped: (() -> Void)?
+    var regButtonTapped: (() -> Void)?
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -55,6 +56,7 @@ class AuthView: UIView {
         button.setTitle("Регистрация", for: .normal)
         button.setTitleColor(AppColors.lightGray, for: .normal)
         button.setTitleColor(AppColors.brawn, for: .highlighted)
+        button.addTarget(self, action: #selector(regButtonTap), for: .touchUpInside)
         
         return button
     }()
@@ -87,8 +89,13 @@ class AuthView: UIView {
     }
     
     @objc func logBattonTap() {
-        loginButtonTap?()
+        loginButtonTapped?()
     }
+    
+    @objc func regButtonTap() {
+        regButtonTapped?()
+    }
+    
     
     func makeRoundedItems() {
         
@@ -158,11 +165,9 @@ class AuthView: UIView {
         }
         
         loginIcon.snp.makeConstraints {
-            
             $0.width.equalTo(self.snp.width).multipliedBy(0.5)
             $0.height.equalTo(self.snp.width).multipliedBy(0.5)
             $0.centerX.equalTo(self.snp.centerX)
-          
             $0.bottom.equalTo(statusLabel.snp.top).offset(-40)
         }
         

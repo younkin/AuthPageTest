@@ -21,6 +21,8 @@
 		74878BF22960AC340095349F /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BF12960AC340095349F /* AuthView.swift */; };
 		74878BFA2960BB100095349F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 74878BF92960BB100095349F /* SnapKit */; };
 		74878BFD2960D45D0095349F /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BFC2960D45D0095349F /* AppColors.swift */; };
+		74878C012961BE290095349F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C002961BE290095349F /* RegisterView.swift */; };
+		74878C032961BE5F0095349F /* RecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C022961BE5F0095349F /* RecoverView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,8 @@
 		74878BEF2960AA1D0095349F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		74878BF12960AC340095349F /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		74878BFC2960D45D0095349F /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		74878C002961BE290095349F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		74878C022961BE5F0095349F /* RecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +127,7 @@
 		74878BEB2960A98A0095349F /* Present Player */ = {
 			isa = PBXGroup;
 			children = (
+				74878BFE2961BDC00095349F /* UIKit */,
 				74878BEC2960A9BB0095349F /* AuthPage */,
 			);
 			path = "Present Player";
@@ -144,6 +149,23 @@
 				74878BFC2960D45D0095349F /* AppColors.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		74878BFE2961BDC00095349F /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				74878BFF2961BDD30095349F /* Views */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		74878BFF2961BDD30095349F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				74878C002961BE290095349F /* RegisterView.swift */,
+				74878C022961BE5F0095349F /* RecoverView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,7 +253,9 @@
 				74878BC62960383B0095349F /* CoreDataManager.swift in Sources */,
 				74878BF22960AC340095349F /* AuthView.swift in Sources */,
 				74878BB1296037BC0095349F /* SceneDelegate.swift in Sources */,
+				74878C012961BE290095349F /* RegisterView.swift in Sources */,
 				74878BD029608DF80095349F /* CoreDataProvider.swift in Sources */,
+				74878C032961BE5F0095349F /* RecoverView.swift in Sources */,
 				74878BF02960AA1D0095349F /* AuthViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

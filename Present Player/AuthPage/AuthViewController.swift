@@ -26,6 +26,7 @@ class AuthViewController: UIViewController {
         setDelegates()
         
         loginButton()
+        regButton()
     }
     
     
@@ -33,9 +34,15 @@ class AuthViewController: UIViewController {
         customView?.emailTextField.delegate = self
         customView?.passwordTextField.delegate = self
     }
+    func regButton() {
+        customView?.regButtonTapped = {
+            let regView = RegisterView()
+            self.present(regView, animated: true)
+        }
+    }
     
     func loginButton() {
-        customView?.loginButtonTap = {
+        customView?.loginButtonTapped = {
             if self.customView?.emailTextField.text == "" {
                 self.customView?.statusLabel.text = "введите мейл"
                 return
