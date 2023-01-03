@@ -9,12 +9,6 @@ import Foundation
 import UIKit
 import SnapKit
 
-//enum StatusState: String {
-//    case greating = "Вы успешно вошли"
-//    case wrongMail = ""
-//    case emptyMail = ""
-//    case emptyPassword = ""
-//}
 
 class AuthView: UIView {
     

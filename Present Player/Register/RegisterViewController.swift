@@ -205,27 +205,5 @@ class RegisterViewController: UIViewController {
 }
 
 
-////MARK: hide Keyboard
-//extension RegisterViewController {
-//    func hideKeyboardWhenTappedAround() {
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(RegisterViewController.dismissKeyboard))
-//        tap.cancelsTouchesInView = false
-//        view.addGestureRecognizer(tap)
-//    }
-//    
-//    @objc func dismissKeyboard() {
-//        view.endEditing(true)
-//    }
-//}
-//
-//
-////MARK: textField Delegate
-//extension RegisterViewController: UITextFieldDelegate {
-//    
-//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        textField.resignFirstResponder()
-//        return true
-//    }
-//    
-//}
+
 

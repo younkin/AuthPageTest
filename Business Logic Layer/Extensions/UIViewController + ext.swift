@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-
+//MARK: тост нотификация
 extension UIViewController {
     
     func showToast(message: String) {
