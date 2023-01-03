@@ -17,8 +17,8 @@ class AuthViewController: UIViewController {
     
     var authViewModel = AuthViewModel()
     private lazy var customView = self.view as? AuthView
-    private lazy var registerView = RegisterView()
-    private lazy var recoveryView = RecoverView()
+
+ 
     
     
     // MARK: - View lifecycle
@@ -31,63 +31,54 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.gray
-        
-        hideKeyboardWhenTappedAround()
-        setDelegates()
+        addKeyboardDismissGesture()
+       
         
         loginButton()
         regButton()
         recoveryButton()
     }
+    override func viewWillDisappear(_ animated: Bool) {
+          super.viewWillDisappear(animated)
+          removeKeyboardDismissGesture()
+      }
     
     
-    
-    func setDelegates() {
-        customView?.emailTextField.delegate = self
-        customView?.passwordTextField.delegate = self
-    }
+
     func regButton() {
         customView?.regButtonTapped = {
-            let regView = RegisterView()
+            let regView = RegisterViewController()
             self.present(regView, animated: true)
         }
     }
     
     func loginButton() {
         self.customView?.loginButtonTapped = {
-            self.authViewModel.createUser(mail: "mail@mail.ru", password: "admin", repPassword: "admin")
-            print(self.customView?.emailTextField.text)
-            print(self.customView?.emailTextField.validate())
-            print(self.customView?.emailTextField.state.isEmpty)
+//            self.showToast(message: "чтото пошло не так")
             
-            //убираем опционал
-            guard let emailText = self.customView?.emailTextField.text,
-                  let passwordText = self.customView?.passwordTextField.text
-            else {return}
 
             
+//            print(self.customView?.emailTextField.text)
+//            print(self.customView?.emailTextField.validate())
+//            print(self.customView?.emailTextField.state.isEmpty)
             
-            
-            // проверяем на валидность написания мейла
-            if !emailText.isValidEmail() {
-                self.customView?.statusLabel.text = "введите правильный мейл"
+            guard let emailText = self.customView?.emailTextField.text,
+                  emailText.isValidEmail(),
+                  !emailText.isEmpty,
+                  let passwordText = self.customView?.passwordTextField.text,
+                  passwordText.isValidPassword(),
+                  !passwordText.isEmpty
+            else {
+                self.customView?.statusLabel.text = "заполните все поля и убедитесь, что мейл и пароль введен верно"
                 return
             }
-            
-            
-            // проверяем на валидность написания пароля
-            if !passwordText.isValidPassword() {
-                    self.customView?.statusLabel.text = "пароль из англ букв и цифр"
-                    return
-                }
-            
-            
-            // запрос на сервер проверки логина
-            
+
             self.loginRequest(mail: emailText, password: passwordText)
             
         }
     }
+    
+    
     func loginRequest(mail: String, password: String) {
         
         if authViewModel.login(mail: mail, password: password) {
@@ -118,26 +109,26 @@ class AuthViewController: UIViewController {
     
 }
 
-//MARK: hide Keyboard 
-extension AuthViewController {
-    func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(AuthViewController.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
-
-//MARK: textField Delegate
-extension AuthViewController: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-}
+////MARK: hide Keyboard 
+//extension AuthViewController {
+//    func hideKeyboardWhenTappedAround() {
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(AuthViewController.dismissKeyboard))
+//        tap.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tap)
+//    }
+//    
+//    @objc func dismissKeyboard() {
+//        view.endEditing(true)
+//    }
+//}
+//
+////MARK: textField Delegate
+//extension AuthViewController: UITextFieldDelegate {
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
+//    
+//}
 

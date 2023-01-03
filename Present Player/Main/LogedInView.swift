@@ -65,7 +65,6 @@ class LogedInView: UIViewController {
     func makeConstraints() {
         
         view.addSubview(logoutButton)
-    
         view.addSubview(statusLabel)
         view.addSubview(loginIcon)
         

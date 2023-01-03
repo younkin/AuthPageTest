@@ -13,16 +13,9 @@ class AuthViewModel {
     
     var coreDataProvider = CoreDataProvider()
     
-    init(){
-        
-    }
     
-    
-    
-    func createUser(mail:String, password:String, repPassword:String) -> Bool {
-        let response = coreDataProvider.addNewUser(email: mail, password: password)
-        return true
-    }
+  
+   
     
     
     func login(mail:String, password: String) -> Bool {
@@ -32,6 +25,10 @@ class AuthViewModel {
         case .success:
             return true
         case .fail:
+            return false
+        case .connectionFail:
+            return false
+        default:
             return false
         }
        

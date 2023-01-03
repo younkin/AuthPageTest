@@ -82,6 +82,8 @@ class AuthView: UIView {
         label.textColor = AppColors.darkGray
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -178,7 +180,7 @@ class AuthView: UIView {
             
             $0.width.equalTo(self.snp.width).multipliedBy(0.7)
             $0.centerX.equalTo(self.snp.centerX)
-            $0.height.equalTo(30)
+            $0.height.equalTo(60)
             $0.bottom.equalTo(emailTextField.snp.top).offset(-20)
         }
         

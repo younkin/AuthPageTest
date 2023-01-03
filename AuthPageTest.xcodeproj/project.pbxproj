@@ -10,6 +10,9 @@
 		740C0EF729622C6600C5E077 /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740C0EF629622C6600C5E077 /* String + Extension.swift */; };
 		743AA46B29643072005FEAF4 /* MailTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA46A29643072005FEAF4 /* MailTextField.swift */; };
 		743AA46D29643089005FEAF4 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA46C29643089005FEAF4 /* PasswordTextField.swift */; };
+		743AA47229647AF9005FEAF4 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA47129647AF9005FEAF4 /* RegisterViewModel.swift */; };
+		743AA47629648CEE005FEAF4 /* RecoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */; };
+		743AA47A2964E2DD005FEAF4 /* UIViewController + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA4792964E2DD005FEAF4 /* UIViewController + ext.swift */; };
 		74878BAF296037BC0095349F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BAE296037BC0095349F /* AppDelegate.swift */; };
 		74878BB1296037BC0095349F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB0296037BC0095349F /* SceneDelegate.swift */; };
 		74878BB3296037BC0095349F /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB2296037BC0095349F /* AuthViewController.swift */; };
@@ -24,7 +27,7 @@
 		74878BF22960AC340095349F /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BF12960AC340095349F /* AuthView.swift */; };
 		74878BFA2960BB100095349F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 74878BF92960BB100095349F /* SnapKit */; };
 		74878BFD2960D45D0095349F /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BFC2960D45D0095349F /* AppColors.swift */; };
-		74878C012961BE290095349F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C002961BE290095349F /* RegisterView.swift */; };
+		74878C012961BE290095349F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C002961BE290095349F /* RegisterViewController.swift */; };
 		74878C032961BE5F0095349F /* RecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C022961BE5F0095349F /* RecoverView.swift */; };
 		74C3ECCE2961D4330094D247 /* LogedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C3ECCD2961D4330094D247 /* LogedInView.swift */; };
 /* End PBXBuildFile section */
@@ -33,6 +36,9 @@
 		740C0EF629622C6600C5E077 /* String + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Extension.swift"; sourceTree = "<group>"; };
 		743AA46A29643072005FEAF4 /* MailTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailTextField.swift; sourceTree = "<group>"; };
 		743AA46C29643089005FEAF4 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		743AA47129647AF9005FEAF4 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewModel.swift; sourceTree = "<group>"; };
+		743AA4792964E2DD005FEAF4 /* UIViewController + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + ext.swift"; sourceTree = "<group>"; };
 		74878BAB296037BC0095349F /* AuthPageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthPageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74878BAE296037BC0095349F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74878BB0296037BC0095349F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,7 +54,7 @@
 		74878BEF2960AA1D0095349F /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		74878BF12960AC340095349F /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		74878BFC2960D45D0095349F /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		74878C002961BE290095349F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		74878C002961BE290095349F /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		74878C022961BE5F0095349F /* RecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverView.swift; sourceTree = "<group>"; };
 		74C3ECCD2961D4330094D247 /* LogedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogedInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +75,7 @@
 			isa = PBXGroup;
 			children = (
 				740C0EF629622C6600C5E077 /* String + Extension.swift */,
+				743AA4792964E2DD005FEAF4 /* UIViewController + ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -80,6 +87,32 @@
 				743AA46C29643089005FEAF4 /* PasswordTextField.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		743AA47029647AB3005FEAF4 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				74878C002961BE290095349F /* RegisterViewController.swift */,
+				743AA47129647AF9005FEAF4 /* RegisterViewModel.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		743AA47329648C91005FEAF4 /* Recovery */ = {
+			isa = PBXGroup;
+			children = (
+				74878C022961BE5F0095349F /* RecoverView.swift */,
+				743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */,
+			);
+			path = Recovery;
+			sourceTree = "<group>";
+		};
+		743AA47429648CBB005FEAF4 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				74C3ECCD2961D4330094D247 /* LogedInView.swift */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		74878BA2296037BC0095349F = {
@@ -146,6 +179,9 @@
 			isa = PBXGroup;
 			children = (
 				74878BFE2961BDC00095349F /* UIKit */,
+				743AA47429648CBB005FEAF4 /* Main */,
+				743AA47329648C91005FEAF4 /* Recovery */,
+				743AA47029647AB3005FEAF4 /* Register */,
 				74878BEC2960A9BB0095349F /* AuthPage */,
 			);
 			path = "Present Player";
@@ -181,9 +217,6 @@
 		74878BFF2961BDD30095349F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				74878C002961BE290095349F /* RegisterView.swift */,
-				74878C022961BE5F0095349F /* RecoverView.swift */,
-				74C3ECCD2961D4330094D247 /* LogedInView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -271,13 +304,16 @@
 				74878BC92960418D0095349F /* Person+CoreDataClass.swift in Sources */,
 				74878BFD2960D45D0095349F /* AppColors.swift in Sources */,
 				743AA46D29643089005FEAF4 /* PasswordTextField.swift in Sources */,
+				743AA47229647AF9005FEAF4 /* RegisterViewModel.swift in Sources */,
 				74C3ECCE2961D4330094D247 /* LogedInView.swift in Sources */,
+				743AA47629648CEE005FEAF4 /* RecoverViewModel.swift in Sources */,
 				74878BAF296037BC0095349F /* AppDelegate.swift in Sources */,
 				74878BC62960383B0095349F /* CoreDataManager.swift in Sources */,
 				74878BF22960AC340095349F /* AuthView.swift in Sources */,
 				743AA46B29643072005FEAF4 /* MailTextField.swift in Sources */,
 				74878BB1296037BC0095349F /* SceneDelegate.swift in Sources */,
-				74878C012961BE290095349F /* RegisterView.swift in Sources */,
+				74878C012961BE290095349F /* RegisterViewController.swift in Sources */,
+				743AA47A2964E2DD005FEAF4 /* UIViewController + ext.swift in Sources */,
 				74878BD029608DF80095349F /* CoreDataProvider.swift in Sources */,
 				74878C032961BE5F0095349F /* RecoverView.swift in Sources */,
 				74878BF02960AA1D0095349F /* AuthViewModel.swift in Sources */,

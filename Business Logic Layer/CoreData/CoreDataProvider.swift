@@ -8,6 +8,17 @@
 import UIKit
 import CoreData
 
+
+enum Response {
+    case success
+    case fail
+    case userNotExist
+    case userExist
+    case connectionFail
+    case wrongPassword
+    case passwordChanged
+}
+
 class CoreDataProvider {
     
     struct Constants {
@@ -15,23 +26,8 @@ class CoreDataProvider {
         static let sortName = "mail"
         
     }
+
     
-    enum Response {
-        case success
-        case fail
-    }
-    
-    enum Error {
-        
-    }
-    
-    //    var fetchResultController: NSFetchedResultsController<NSFetchRequestResult> = {
-    //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
-    //        let sortDescriptor = NSSortDescriptor(key: Constants.sortName, ascending: true)
-    //        fetchRequest.sortDescriptors = [sortDescriptor]
-    //        let fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: CoreDataManager.instance.context, sectionNameKeyPath: nil, cacheName: nil)
-    //        return fetchedResultController
-    //    }()
     init() {
         
     }
@@ -44,7 +40,6 @@ class CoreDataProvider {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
         return fetchRequest
     }()
-//    var person: [Person]?
     
     func getAllUsers() -> [Person] {
         do {
@@ -66,77 +61,66 @@ class CoreDataProvider {
     }
     
     
-    func changePassword(mail:String, password:String , newPassword: String) -> Response {
+    func changePassword(mail: String, password: String, newPassword: String) -> Response {
+        let predicate = NSPredicate(format: "mail = %@", mail)
+        fetchRequest.predicate = predicate
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-            for result in results as! [Person] {
-                if result.mail == mail && result.password == password {
-                    result.password = newPassword
-                    CoreDataManager.instance.saveContext()
-                    return Response.success
-                }
+            guard let person = results.first as? Person else {
+                return .userNotExist
+            }
+            guard person.password == password else {
+                return .wrongPassword
+            }
+            person.password = newPassword
+            CoreDataManager.instance.saveContext()
+            return .passwordChanged
+        } catch {
+            print(error)
+        }
+        return .connectionFail
+    }
+    
+    func checkMailInBase(mail: String) -> Response {
+        let predicate = NSPredicate(format: "mail = %@", mail)
+        fetchRequest.predicate = predicate
+        do {
+            let count = try CoreDataManager.instance.context.count(for: fetchRequest)
+            if count > 0 {
+                return .userExist
             }
         } catch {
             print(error)
         }
-        
-        return Response.fail
+        return .userNotExist
     }
     
-    func checkMailInBase(mail:String) -> Bool {
-        do {
-            let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-            for result in results as! [Person] {
-                if result.mail == mail {
-                    return true
-                }
-            }
-        } catch {
-            print(error)
-        }
-        return false
-    }
-    
-    //    func performFetch() {
-    //        do {
-    //            try fetchResultController.performFetch()
-    //        } catch {
-    //            print(error)
-    //        }
-    //    }
     
     func deleteAllUsers() -> Response {
-
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
-            let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-            for result in results as! [NSManagedObject] {
-                CoreDataManager.instance.context.delete(result)
-                
-            }
-            CoreDataManager.instance.saveContext()
-            return Response.success
+            try CoreDataManager.instance.context.execute(deleteRequest)
+            return .success
         } catch {
             print(error)
         }
-        
-        return.fail
+        return .fail
     }
     
     
     
-    func loginCheck(mail:String, password:String) -> Response {
-
+    func loginCheck(mail: String, password: String) -> Response {
+        let predicate = NSPredicate(format: "mail = %@ AND password = %@", mail, password)
+        fetchRequest.predicate = predicate
         do {
-            let results = try CoreDataManager.instance.context.fetch(fetchRequest)
-            for result in results as! [Person] {
-                if result.mail == mail && result.password == password {
-                    return Response.success
-                }
+            let count = try CoreDataManager.instance.context.count(for: fetchRequest)
+            if count > 0 {
+                return .success
             }
         } catch {
             print(error)
         }
-        return Response.fail
+        return .fail
     }
     
     

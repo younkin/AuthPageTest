@@ -1,24 +1,30 @@
 //
-//  RecoverView.swift
+//  RegisterView.swift
 //  AuthPageTest
 //
 //  Created by Евгений Юнкин on 01.01.23.
 //
 
 
-
-
 import UIKit
 import SnapKit
 
-class RecoverView: UIViewController {
+class RegisterViewController: UIViewController {
     
-//    var loginButtonTap: (() -> Void)?
+
+    var registerViewModel = RegisterViewModel()
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "loginIcon")
         return image
+    }()
+    
+    private var exitButton: UIButton = {
+        let button = UIButton(type: .close)
+        button.setTitleColor(AppColors.lightGray, for: .normal)
+        button.addTarget(self, action: #selector(exitTapped), for: .touchUpInside)
+        return button
     }()
     
      var emailTextField: EmailTextField = {
@@ -42,18 +48,18 @@ class RecoverView: UIViewController {
        let textField = PasswordTextField()
        textField.backgroundColor = AppColors.lightGray
         textField.returnKeyType = UIReturnKeyType.done
-        let attr = NSAttributedString(string: "новый пароль", attributes: [.foregroundColor: AppColors.gray])
+        let attr = NSAttributedString(string: "повторите пароль", attributes: [.foregroundColor: AppColors.gray])
         textField.attributedPlaceholder = attr
                return textField
    }()
     
-    private var recButton: UIButton = {
+    private var regButton: UIButton = {
         let button = UIButton()
-        button.setTitle("сменить пароль", for: .normal)
+        button.setTitle("Регистрироваться", for: .normal)
         button.setTitleColor(AppColors.darkGray, for: .normal)
         button.backgroundColor = AppColors.orange
         button.setTitleColor(AppColors.brawn, for: .highlighted)
-        button.addTarget(self, action: #selector(recСonfirm), for: .touchUpInside)
+        button.addTarget(self, action: #selector(regСonfirm), for: .touchUpInside)
         return button
     }()
   
@@ -63,6 +69,8 @@ class RecoverView: UIViewController {
         label.textColor = AppColors.lightGray
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -70,23 +78,56 @@ class RecoverView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = AppColors.darkGray
         
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
+        addKeyboardDismissGesture()
         makeConstraints()
-        makeRoundedItems()
-        hideKeyboardWhenTappedAround()
         
     }
-  
+    override func viewWillDisappear(_ animated: Bool) {
+          super.viewWillDisappear(animated)
+          removeKeyboardDismissGesture()
+      }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        makeRoundedItems()
+    }
     
-    @objc func recСonfirm() {
-//        loginButtonTap?()
+    @objc func regСonfirm() {
+       
+        
+        guard let emailText = emailTextField.text,
+              !emailText.isEmpty,
+              emailText.isValidEmail(),
+              let passwordText = passwordTextField.text,
+              !passwordText.isEmpty,
+              passwordText.isValidPassword(),
+              let repPasswordText = repeatPasswordTextField.text,
+              !repPasswordText.isEmpty,
+              repPasswordText.isValidPassword(),
+              passwordText == repPasswordText
+        else {
+            self.statusLabel.text = "заполните все поля и убедитесь, что пароли совпадают"
+            return
+        }
+        guard registerViewModel.checkUserInBase(mail: emailText)
+        else {
+            self.statusLabel.text = "такой пользователь уже существует"
+            return
+        }
+        
+        if registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) {
+            self.statusLabel.text = "Вы успешно зарегистрировались"
+        }
+    }
+    
+    @objc func exitTapped() {
+
+        dismiss(animated: true)
     }
     
     func makeRoundedItems() {
         
-        recButton.layer.cornerRadius = min(recButton.layer.frame.width , recButton.layer.frame.height) / 2
-        recButton.layer.masksToBounds = true
+        regButton.layer.cornerRadius = min(regButton.layer.frame.width , regButton.layer.frame.height) / 2
+        regButton.layer.masksToBounds = true
         
        
         emailTextField.layer.cornerRadius = min(emailTextField.layer.frame.width , emailTextField.layer.frame.height) / 8
@@ -95,19 +136,27 @@ class RecoverView: UIViewController {
         
         passwordTextField.layer.cornerRadius = min(passwordTextField.layer.frame.width , passwordTextField.layer.frame.height) / 8
         passwordTextField.layer.masksToBounds = true
+        
+        repeatPasswordTextField.layer.cornerRadius = min(repeatPasswordTextField.layer.frame.width , repeatPasswordTextField.layer.frame.height) / 8
+        repeatPasswordTextField.layer.masksToBounds = true
     }
     
     func makeConstraints() {
-        
+        view.addSubview(exitButton)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(repeatPasswordTextField)
-        view.addSubview(recButton)
+        view.addSubview(regButton)
     
         view.addSubview(statusLabel)
         view.addSubview(loginIcon)
         
-        
+        exitButton.snp.makeConstraints {
+            $0.top.equalTo(view.snp.top).offset(20)
+            $0.right.equalTo(view.snp.right).offset(-20)
+            $0.height.equalTo(30)
+            $0.width.equalTo(30)
+        }
 
         emailTextField.snp.makeConstraints {
             $0.center.equalTo(view.snp.center)
@@ -126,7 +175,7 @@ class RecoverView: UIViewController {
             $0.height.equalTo(30)
             $0.width.equalTo(view.snp.width).multipliedBy(0.7)
         }
-        recButton.snp.makeConstraints {
+        regButton.snp.makeConstraints {
             $0.top.equalTo(repeatPasswordTextField.snp.bottom).offset(10)
             $0.width.equalTo(view.snp.width).multipliedBy(0.5)
             $0.centerX.equalTo(view.snp.centerX)
@@ -138,7 +187,7 @@ class RecoverView: UIViewController {
             
             $0.width.equalTo(view.snp.width).multipliedBy(0.7)
             $0.centerX.equalTo(view.snp.centerX)
-            $0.height.equalTo(30)
+            $0.height.equalTo(100)
             $0.bottom.equalTo(emailTextField.snp.top).offset(-20)
         }
         
@@ -156,25 +205,27 @@ class RecoverView: UIViewController {
 }
 
 
-//MARK: hide Keyboard
-extension RecoverView {
-    func hideKeyboardWhenTappedAround() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(RecoverView.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}
-//MARK: textField Delegate
-extension RecoverView: UITextFieldDelegate {
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-}
+////MARK: hide Keyboard
+//extension RegisterViewController {
+//    func hideKeyboardWhenTappedAround() {
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(RegisterViewController.dismissKeyboard))
+//        tap.cancelsTouchesInView = false
+//        view.addGestureRecognizer(tap)
+//    }
+//    
+//    @objc func dismissKeyboard() {
+//        view.endEditing(true)
+//    }
+//}
+//
+//
+////MARK: textField Delegate
+//extension RegisterViewController: UITextFieldDelegate {
+//    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
+//    
+//}
 
