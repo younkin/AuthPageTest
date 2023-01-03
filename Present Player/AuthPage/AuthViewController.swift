@@ -55,49 +55,52 @@ class AuthViewController: UIViewController {
     
     func loginButton() {
         self.customView?.loginButtonTapped = {
+            self.authViewModel.createUser(mail: "mail@mail.ru", password: "admin", repPassword: "admin")
+            print(self.customView?.emailTextField.text)
+            print(self.customView?.emailTextField.validate())
+            print(self.customView?.emailTextField.state.isEmpty)
             
-            //убираем опционал и проверяем на налицие текста в мейл
-            guard let emailText = self.customView?.emailTextField.text, !emailText.isEmpty else {
-                self.customView?.statusLabel.text = "введите мейл"
-                return
-            }
-            //убираем опционал и проверяем на налицие текста в пароле
-            guard let passwordText = self.customView?.passwordTextField.text, !passwordText.isEmpty else {
-                self.customView?.statusLabel.text = "введите пароль"
-                return
-            }
+            //убираем опционал
+            guard let emailText = self.customView?.emailTextField.text,
+                  let passwordText = self.customView?.passwordTextField.text
+            else {return}
+
+            
             
             
             // проверяем на валидность написания мейла
-            if !emailText.isValidEmailAddress() {
+            if !emailText.isValidEmail() {
                 self.customView?.statusLabel.text = "введите правильный мейл"
                 return
             }
             
             
             // проверяем на валидность написания пароля
-            if !passwordText.matchesEnglishLettersAndNumbersFilter() {
+            if !passwordText.isValidPassword() {
                     self.customView?.statusLabel.text = "пароль из англ букв и цифр"
                     return
                 }
             
             
             // запрос на сервер проверки логина
-            if self.authViewModel.login(mail: emailText, password: passwordText) {
-                let login = LogedInView()
-                self.present(login, animated: true)
-            } else {
-                self.customView?.statusLabel.text = "неверный пароль"
-            }
             
+            self.loginRequest(mail: emailText, password: passwordText)
             
-            
-            
+        }
+    }
+    func loginRequest(mail: String, password: String) {
+        
+        if authViewModel.login(mail: mail, password: password) {
+            let login = LogedInView()
+            self.present(login, animated: true)
+        } else {
+            self.customView?.statusLabel.text = "неверный пароль"
         }
     }
     
     
     func registerButton() {
+        
         
     }
     

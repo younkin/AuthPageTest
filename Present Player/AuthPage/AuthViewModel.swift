@@ -18,6 +18,13 @@ class AuthViewModel {
     }
     
     
+    
+    func createUser(mail:String, password:String, repPassword:String) -> Bool {
+        let response = coreDataProvider.addNewUser(email: mail, password: password)
+        return true
+    }
+    
+    
     func login(mail:String, password: String) -> Bool {
         
        let response = coreDataProvider.loginCheck(mail: mail, password: password)

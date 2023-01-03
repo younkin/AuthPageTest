@@ -29,8 +29,8 @@ class AuthView: UIView {
         return image
     }()
     
-     var emailTextField: UITextField = {
-        let textField = UITextField()
+     var emailTextField: EmailTextField = {
+        let textField = EmailTextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
          let attr = NSAttributedString(string: "имейл", attributes: [.foregroundColor: AppColors.gray])
@@ -38,8 +38,8 @@ class AuthView: UIView {
         return textField
     }()
     
-     var passwordTextField: UITextField = {
-        let textField = UITextField()
+     var passwordTextField: PasswordTextField = {
+        let textField = PasswordTextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
          let attr = NSAttributedString(string: "пароль", attributes: [.foregroundColor: AppColors.gray])

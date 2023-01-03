@@ -21,8 +21,8 @@ class RecoverView: UIViewController {
         return image
     }()
     
-     var emailTextField: UITextField = {
-        let textField = UITextField()
+     var emailTextField: EmailTextField = {
+        let textField = EmailTextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
          let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
@@ -30,16 +30,16 @@ class RecoverView: UIViewController {
         return textField
     }()
     
-     var passwordTextField: UITextField = {
-        let textField = UITextField()
+     var passwordTextField: PasswordTextField = {
+        let textField = PasswordTextField()
         textField.backgroundColor = AppColors.lightGray
          textField.returnKeyType = UIReturnKeyType.done
          let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
          textField.attributedPlaceholder = attr
         return textField
     }()
-    var repeatPasswordTextField: UITextField = {
-       let textField = UITextField()
+    var repeatPasswordTextField: PasswordTextField = {
+       let textField = PasswordTextField()
        textField.backgroundColor = AppColors.lightGray
         textField.returnKeyType = UIReturnKeyType.done
         let attr = NSAttributedString(string: "новый пароль", attributes: [.foregroundColor: AppColors.gray])

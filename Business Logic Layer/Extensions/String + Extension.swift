@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-    func matchesEnglishLettersAndNumbersFilter() -> Bool {
+    func isValidPassword() -> Bool {
         let allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         let characterSet = CharacterSet(charactersIn: allowedCharacters)
         let filteredCharacters = self.components(separatedBy: characterSet.inverted).joined()
@@ -17,7 +17,7 @@ extension String {
 }
 
 extension String {
-    func isValidEmailAddress() -> Bool {
+    func isValidEmail() -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         if self.range(of: emailRegex, options: .regularExpression) != nil {
             return true
