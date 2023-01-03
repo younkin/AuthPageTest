@@ -1,5 +1,5 @@
 //
-//  RecoverView.swift
+//  RecoverViewController.swift
 //  AuthPageTest
 //
 //  Created by Евгений Юнкин on 01.01.23.
@@ -11,7 +11,7 @@
 import UIKit
 import SnapKit
 
-class RecoverView: UIViewController {
+class RecoverViewController: UIViewController {
     
 
     

@@ -28,7 +28,7 @@
 		74878BFA2960BB100095349F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 74878BF92960BB100095349F /* SnapKit */; };
 		74878BFD2960D45D0095349F /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BFC2960D45D0095349F /* AppColors.swift */; };
 		74878C012961BE290095349F /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C002961BE290095349F /* RegisterViewController.swift */; };
-		74878C032961BE5F0095349F /* RecoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C022961BE5F0095349F /* RecoverView.swift */; };
+		74878C032961BE5F0095349F /* RecoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878C022961BE5F0095349F /* RecoverViewController.swift */; };
 		74C3ECCE2961D4330094D247 /* LogedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C3ECCD2961D4330094D247 /* LogedInView.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,7 +55,7 @@
 		74878BF12960AC340095349F /* AuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthView.swift; sourceTree = "<group>"; };
 		74878BFC2960D45D0095349F /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		74878C002961BE290095349F /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
-		74878C022961BE5F0095349F /* RecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverView.swift; sourceTree = "<group>"; };
+		74878C022961BE5F0095349F /* RecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewController.swift; sourceTree = "<group>"; };
 		74C3ECCD2961D4330094D247 /* LogedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogedInView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,7 +101,7 @@
 		743AA47329648C91005FEAF4 /* Recovery */ = {
 			isa = PBXGroup;
 			children = (
-				74878C022961BE5F0095349F /* RecoverView.swift */,
+				74878C022961BE5F0095349F /* RecoverViewController.swift */,
 				743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */,
 			);
 			path = Recovery;
@@ -315,7 +315,7 @@
 				74878C012961BE290095349F /* RegisterViewController.swift in Sources */,
 				743AA47A2964E2DD005FEAF4 /* UIViewController + ext.swift in Sources */,
 				74878BD029608DF80095349F /* CoreDataProvider.swift in Sources */,
-				74878C032961BE5F0095349F /* RecoverView.swift in Sources */,
+				74878C032961BE5F0095349F /* RecoverViewController.swift in Sources */,
 				74878BF02960AA1D0095349F /* AuthViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

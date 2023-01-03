@@ -98,7 +98,7 @@ class AuthViewController: UIViewController {
     
     func recoveryButton() {
         customView?.recoveryButtonTapped = {
-            let recView = RecoverView()
+            let recView = RecoverViewController()
             self.present(recView, animated: true)
         }
     }

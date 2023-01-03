@@ -57,9 +57,6 @@ class RecoverViewModel {
     
     func changePassword(mail:String, oldPassword: String, newPassword: String) -> Response {
         let response = coreDataProvider.changePassword(mail: mail, password: oldPassword, newPassword: newPassword)
-        
-        
-        
         return response
     }
     
