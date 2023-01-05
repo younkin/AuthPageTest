@@ -104,7 +104,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
-            landmarkName = "loginButton()"
+            landmarkName = "loginRequest(mail:password:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -136,7 +136,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "72"
             endingLineNumber = "72"
-            landmarkName = "loginButton()"
+            landmarkName = "loginRequest(mail:password:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -248,7 +248,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "83"
             endingLineNumber = "83"
-            landmarkName = "authorization(mail:password:)"
+            landmarkName = "loginRequest(mail:password:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -272,7 +272,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "66AD8F16-C00C-457B-82C4-811B59C432BB"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Present Player/AuthPage/AuthViewController.swift"
@@ -280,7 +280,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "43"
             endingLineNumber = "43"
-            landmarkName = "setupUI()"
+            landmarkName = "regButton()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -296,7 +296,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
             endingLineNumber = "42"
-            landmarkName = "setupUI()"
+            landmarkName = "regButton()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
