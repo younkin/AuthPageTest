@@ -116,7 +116,7 @@ class RecoverViewController: UIViewController {
         self.recButton.isEnabled = false
         
         recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText) { response in
-            switch response {
+            switch response.result {
             case .userNotExist:
                 self.showToast(message: "Такого пользователя не существует")
                 self.indicator.stopAnimating()
