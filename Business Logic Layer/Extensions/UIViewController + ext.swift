@@ -10,36 +10,55 @@ import SnapKit
 //MARK: тост нотификация
 extension UIViewController {
     
-    func showToast(message: String) {
-        let toastView = UIView(frame: CGRect(x: 0, y: 0, width: 250, height: 50))
-        toastView.backgroundColor = UIColor.black.withAlphaComponent(0.6)
-        toastView.layer.cornerRadius = 10
+    func showToast(message: String, withButton: Bool = false) {
+        
+       lazy var toastView: UIView = {
+            let toast = UIView(frame: CGRect(x: 0, y: 0, width: 250, height: 50))
+            toast.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+            toast.layer.cornerRadius = 10
+            toast.alpha = 0.0
+            return toast
+        }()
+        
+        lazy var toastLabel: UILabel = {
+            let label = UILabel(frame: CGRect(x: 10, y: 10, width: 240, height: 30))
+            label.text = message
+            label.textColor = AppColors.lightGray
+            label.textAlignment = .left
+            label.numberOfLines = 0
+            label.adjustsFontSizeToFitWidth = true
+            return label
+        }()
 
-        let toastLabel = UILabel(frame: CGRect(x: 10, y: 10, width: 240, height: 30))
-        toastLabel.text = message
-        toastLabel.textColor = AppColors.lightGray
-        toastLabel.textAlignment = .left
+        lazy var tryAgainButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("Try Again", for: .normal)
+            button.setTitleColor(AppColors.orange, for: .normal)
+            button.addTarget(self, action: #selector(tryAgainButtonTapped), for: .touchUpInside)
+            button.isHidden = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            return button
+        }()
+        
         toastView.addSubview(toastLabel)
-
-        let tryAgainButton = UIButton(type: .system)
-        tryAgainButton.setTitle("Try Again", for: .normal)
-        tryAgainButton.setTitleColor(AppColors.orange, for: .normal)
-        tryAgainButton.addTarget(self, action: #selector(tryAgainButtonTapped), for: .touchUpInside)
         toastView.addSubview(tryAgainButton)
-
         self.view.addSubview(toastView)
-        toastView.alpha = 0.0
+        
+        
+        if withButton {
+            tryAgainButton.isHidden = false
+        }
         
         toastView.snp.makeConstraints {
             $0.leading.equalTo(self.view.snp.leading).offset(20)
             $0.trailing.equalTo(self.view.snp.trailing).offset(-20)
-            $0.bottom.equalTo(self.view.snp.bottom).offset(-20)
-            $0.height.equalTo(50)
+            $0.bottom.equalTo(self.view.snp.bottom).offset(-40)
+            $0.height.equalTo(100)
         }
 
         toastLabel.snp.makeConstraints {
             $0.leading.equalTo(toastView.snp.leading).offset(10)
-            $0.trailing.equalTo(toastView.snp.trailing).offset(-10)
+            $0.trailing.equalTo(tryAgainButton.snp.leading).offset(-10)
             $0.top.equalTo(toastView.snp.top).offset(10)
             $0.bottom.equalTo(toastView.snp.bottom).offset(-10)
         }
@@ -47,8 +66,8 @@ extension UIViewController {
         tryAgainButton.snp.makeConstraints {
             $0.trailing.equalTo(toastView.snp.trailing).offset(-10)
             $0.centerY.equalTo(toastView.snp.centerY)
-            $0.width.equalTo(100)
-            $0.height.equalTo(50)
+            $0.width.equalTo(50)
+            $0.height.equalTo(30)
         }
         
         UIView.animate(withDuration: 1.0, delay: 0.0, options: .curveEaseOut, animations: {
@@ -67,7 +86,7 @@ extension UIViewController {
     }
 
     @objc func tryAgainButtonTapped() {
-        //
+       
     }
 }
 

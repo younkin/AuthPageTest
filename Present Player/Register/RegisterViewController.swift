@@ -11,8 +11,9 @@ import SnapKit
 
 class RegisterViewController: UIViewController {
     
-
+    
     var registerViewModel = RegisterViewModel()
+    let indicator = UIActivityIndicatorView(style: .medium)
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -27,31 +28,31 @@ class RegisterViewController: UIViewController {
         return button
     }()
     
-     var emailTextField: EmailTextField = {
+    var emailTextField: EmailTextField = {
         let textField = EmailTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     
-     var passwordTextField: PasswordTextField = {
+    var passwordTextField: PasswordTextField = {
         let textField = PasswordTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     var repeatPasswordTextField: PasswordTextField = {
-       let textField = PasswordTextField()
-       textField.backgroundColor = AppColors.lightGray
+        let textField = PasswordTextField()
+        textField.backgroundColor = AppColors.lightGray
         textField.returnKeyType = UIReturnKeyType.done
         let attr = NSAttributedString(string: "повторите пароль", attributes: [.foregroundColor: AppColors.gray])
         textField.attributedPlaceholder = attr
-               return textField
-   }()
+        return textField
+    }()
     
     private var regButton: UIButton = {
         let button = UIButton()
@@ -62,9 +63,9 @@ class RegisterViewController: UIViewController {
         button.addTarget(self, action: #selector(regСonfirm), for: .touchUpInside)
         return button
     }()
-  
-     var statusLabel: UILabel = {
-      let label = UILabel()
+    
+    var statusLabel: UILabel = {
+        let label = UILabel()
         label.text = "введите email и пароль"
         label.textColor = AppColors.lightGray
         label.font = UIFont.systemFont(ofSize: 18)
@@ -83,16 +84,16 @@ class RegisterViewController: UIViewController {
         
     }
     override func viewWillDisappear(_ animated: Bool) {
-          super.viewWillDisappear(animated)
-          removeKeyboardDismissGesture()
-      }
+        super.viewWillDisappear(animated)
+        removeKeyboardDismissGesture()
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         makeRoundedItems()
     }
     
     @objc func regСonfirm() {
-       
+        
         
         guard let emailText = emailTextField.text,
               !emailText.isEmpty,
@@ -108,19 +109,35 @@ class RegisterViewController: UIViewController {
             self.statusLabel.text = "заполните все поля и убедитесь, что пароли совпадают"
             return
         }
-        guard registerViewModel.checkUserInBase(mail: emailText)
-        else {
-            self.statusLabel.text = "такой пользователь уже существует"
-            return
-        }
+        self.indicator.startAnimating()
+        self.regButton.isEnabled = false
         
-        if registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) {
-            self.statusLabel.text = "Вы успешно зарегистрировались"
+        registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) { response in
+            switch response {
+            case .success:
+                self.showToast(message: "Вы зарегистрировались")
+                self.indicator.stopAnimating()
+                self.regButton.isEnabled = true
+            case .fail:
+                self.showToast(message: "Не верный пароль")
+                self.indicator.stopAnimating()
+                self.regButton.isEnabled = true
+            case .connectionFail:
+                self.showToast(message: "Чтото пошло не так")
+                self.indicator.stopAnimating()
+                self.regButton.isEnabled = true
+            case .userExist:
+                self.showToast(message: "Такой пользователь уже существует")
+                self.indicator.stopAnimating()
+                self.regButton.isEnabled = true
+            default:
+                break
+            }
         }
     }
     
     @objc func exitTapped() {
-
+        
         dismiss(animated: true)
     }
     
@@ -129,7 +146,7 @@ class RegisterViewController: UIViewController {
         regButton.layer.cornerRadius = min(regButton.layer.frame.width , regButton.layer.frame.height) / 2
         regButton.layer.masksToBounds = true
         
-       
+        
         emailTextField.layer.cornerRadius = min(emailTextField.layer.frame.width , emailTextField.layer.frame.height) / 8
         emailTextField.layer.masksToBounds = true
         
@@ -147,17 +164,21 @@ class RegisterViewController: UIViewController {
         view.addSubview(passwordTextField)
         view.addSubview(repeatPasswordTextField)
         view.addSubview(regButton)
-    
+        view.addSubview(indicator)
         view.addSubview(statusLabel)
         view.addSubview(loginIcon)
         
+        indicator.snp.makeConstraints {
+            $0.center.equalTo(regButton.snp.center)
+            $0.height.width.equalTo(30)
+        }
         exitButton.snp.makeConstraints {
             $0.top.equalTo(view.snp.top).offset(20)
             $0.right.equalTo(view.snp.right).offset(-20)
             $0.height.equalTo(30)
             $0.width.equalTo(30)
         }
-
+        
         emailTextField.snp.makeConstraints {
             $0.center.equalTo(view.snp.center)
             $0.height.equalTo(30)
@@ -182,7 +203,7 @@ class RegisterViewController: UIViewController {
             $0.height.equalTo(30)
         }
         
-      
+        
         statusLabel.snp.makeConstraints {
             
             $0.width.equalTo(view.snp.width).multipliedBy(0.7)
@@ -198,9 +219,9 @@ class RegisterViewController: UIViewController {
             $0.bottom.equalTo(statusLabel.snp.top).offset(-40)
         }
         
-  
+        
     }
-   
+    
     
 }
 

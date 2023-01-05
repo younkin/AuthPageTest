@@ -13,9 +13,10 @@ import SnapKit
 
 class RecoverViewController: UIViewController {
     
-
+    
     
     var recoverViewModel = RecoverViewModel()
+    let indicator = UIActivityIndicatorView(style: .medium)
     
     
     private var loginIcon: UIImageView = {
@@ -31,31 +32,31 @@ class RecoverViewController: UIViewController {
         return button
     }()
     
-     var emailTextField: EmailTextField = {
+    var emailTextField: EmailTextField = {
         let textField = EmailTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "введите мейл", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     
-     var passwordTextField: PasswordTextField = {
+    var passwordTextField: PasswordTextField = {
         let textField = PasswordTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "введите пароль", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     var repeatPasswordTextField: PasswordTextField = {
-       let textField = PasswordTextField()
-       textField.backgroundColor = AppColors.lightGray
+        let textField = PasswordTextField()
+        textField.backgroundColor = AppColors.lightGray
         textField.returnKeyType = UIReturnKeyType.done
         let attr = NSAttributedString(string: "новый пароль", attributes: [.foregroundColor: AppColors.gray])
         textField.attributedPlaceholder = attr
-               return textField
-   }()
+        return textField
+    }()
     
     private var recButton: UIButton = {
         let button = UIButton()
@@ -66,9 +67,9 @@ class RecoverViewController: UIViewController {
         button.addTarget(self, action: #selector(recСonfirm), for: .touchUpInside)
         return button
     }()
-  
-     var statusLabel: UILabel = {
-      let label = UILabel()
+    
+    var statusLabel: UILabel = {
+        let label = UILabel()
         label.text = "введите email и пароль"
         label.textColor = AppColors.lightGray
         label.font = UIFont.systemFont(ofSize: 18)
@@ -85,19 +86,19 @@ class RecoverViewController: UIViewController {
         addKeyboardDismissGesture()
         makeConstraints()
         makeRoundedItems()
-       
+        
     }
     override func viewWillDisappear(_ animated: Bool) {
-          super.viewWillDisappear(animated)
-          removeKeyboardDismissGesture()
-      }
-  
+        super.viewWillDisappear(animated)
+        removeKeyboardDismissGesture()
+    }
+    
     @objc func exitTapped() {
         dismiss(animated: true)
     }
-
+    
     @objc func recСonfirm() {
-
+        
         guard let emailText = emailTextField.text,
               !emailText.isEmpty,
               emailText.isValidEmail(),
@@ -111,28 +112,37 @@ class RecoverViewController: UIViewController {
             self.statusLabel.text = "заполните все поля и убедитесь, что мейл и пароль введен верно"
             return
         }
+        self.indicator.startAnimating()
+        self.recButton.isEnabled = false
         
-        
-        
-      
-        
-        
-        let response = recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText)
-        
-        switch response {
-            
-        case .userNotExist:
-            self.statusLabel.text = "Такого пользователя не существует"
-        case .connectionFail:
-            print("Connection problem")
-        case .wrongPassword:
-            self.statusLabel.text = "Пароль не верный"
-        case .passwordChanged:
-            self.statusLabel.text = "Пароль изменен"
-        default:
-            print("")
+        recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText) { response in
+            switch response {
+            case .userNotExist:
+                self.showToast(message: "Такого пользователя не существует")
+                self.indicator.stopAnimating()
+                self.recButton.isEnabled = true
+            case .connectionFail:
+                self.showToast(message: "потеря соединения")
+                self.indicator.stopAnimating()
+                self.recButton.isEnabled = true
+            case .wrongPassword:
+                self.showToast(message: "Пароль не верный")
+                self.indicator.stopAnimating()
+                self.recButton.isEnabled = true
+            case .passwordChanged:
+                self.showToast(message: "Пароль изменен")
+                self.indicator.stopAnimating()
+                self.recButton.isEnabled = true
+            default:
+                self.showToast(message: "чтото пошло не так")
+                self.indicator.stopAnimating()
+                self.recButton.isEnabled = true
+            }
         }
-    
+        
+        
+        
+        
         
         
     }
@@ -142,7 +152,7 @@ class RecoverViewController: UIViewController {
         recButton.layer.cornerRadius = min(recButton.layer.frame.width , recButton.layer.frame.height) / 2
         recButton.layer.masksToBounds = true
         
-       
+        
         emailTextField.layer.cornerRadius = min(emailTextField.layer.frame.width , emailTextField.layer.frame.height) / 8
         emailTextField.layer.masksToBounds = true
         
@@ -160,14 +170,20 @@ class RecoverViewController: UIViewController {
         view.addSubview(recButton)
         view.addSubview(statusLabel)
         view.addSubview(loginIcon)
+        view.addSubview(indicator)
         
+        
+        indicator.snp.makeConstraints {
+            $0.center.equalTo(recButton.snp.center)
+            $0.height.width.equalTo(30)
+        }
         exitButton.snp.makeConstraints {
             $0.top.equalTo(view.snp.top).offset(20)
             $0.right.equalTo(view.snp.right).offset(-20)
             $0.height.equalTo(30)
             $0.width.equalTo(30)
         }
-
+        
         emailTextField.snp.makeConstraints {
             $0.center.equalTo(view.snp.center)
             $0.height.equalTo(30)
@@ -191,7 +207,7 @@ class RecoverViewController: UIViewController {
             $0.centerX.equalTo(view.snp.centerX)
             $0.height.equalTo(30)
         }
-      
+        
         statusLabel.snp.makeConstraints {
             $0.width.equalTo(view.snp.width).multipliedBy(0.7)
             $0.centerX.equalTo(view.snp.centerX)

@@ -12,27 +12,13 @@ class RegisterViewModel {
     
     var coreDataProvider = CoreDataProvider()
     
-    
-    func checkUserInBase(mail: String) -> Bool {
+    func createUser(mail:String, password:String, repPassword:String, complition:@escaping (Response) -> Void) {
         
-        let response = coreDataProvider.checkMailInBase(mail: mail)
-        
-        switch response {
-        case .userNotExist:
-            return true
-        case .userExist:
-            return false
-        case .connectionFail:
-            return false
-        default:
-            return false
+        coreDataProvider.addNewUser(email: mail, password: password) { response in
+            complition(response)
         }
+        
     }
     
-    func createUser(mail:String, password:String, repPassword:String) -> Bool {
-        let response = coreDataProvider.addNewUser(email: mail, password: password)
-        return true
-    }
-   
     
 }

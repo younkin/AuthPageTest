@@ -14,27 +14,11 @@ class AuthViewModel {
     var coreDataProvider = CoreDataProvider()
     
     
-  
-   
     
-    
-    func login(mail:String, password: String) -> Bool {
-        
-       let response = coreDataProvider.loginCheck(mail: mail, password: password)
-        switch response {
-        case .success:
-            return true
-        case .fail:
-            return false
-        case .connectionFail:
-            return false
-        default:
-            return false
+    func login(mail: String, password: String, completion: @escaping (Response) -> Void) {
+        coreDataProvider.loginCheck(mail: mail, password: password) { response in
+            completion(response)
         }
-       
     }
-    
-  
-    
     
 }

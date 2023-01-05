@@ -16,6 +16,7 @@ class AuthView: UIView {
     var regButtonTapped: (() -> Void)?
     var recoveryButtonTapped: (() -> Void)?
     
+    let indicator = UIActivityIndicatorView(style: .medium)
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -23,25 +24,25 @@ class AuthView: UIView {
         return image
     }()
     
-     var emailTextField: EmailTextField = {
+    var emailTextField: EmailTextField = {
         let textField = EmailTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "имейл", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "имейл", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     
-     var passwordTextField: PasswordTextField = {
+    var passwordTextField: PasswordTextField = {
         let textField = PasswordTextField()
         textField.backgroundColor = AppColors.lightGray
-         textField.returnKeyType = UIReturnKeyType.done
-         let attr = NSAttributedString(string: "пароль", attributes: [.foregroundColor: AppColors.gray])
-         textField.attributedPlaceholder = attr
+        textField.returnKeyType = UIReturnKeyType.done
+        let attr = NSAttributedString(string: "пароль", attributes: [.foregroundColor: AppColors.gray])
+        textField.attributedPlaceholder = attr
         return textField
     }()
     
-    private var loginButton: UIButton = {
+     var loginButton: UIButton = {
         let button = UIButton()
         button.setTitle("Авторизироваться", for: .normal)
         button.setTitleColor(AppColors.darkGray, for: .normal)
@@ -57,7 +58,7 @@ class AuthView: UIView {
         button.setTitleColor(AppColors.lightGray, for: .normal)
         button.setTitleColor(AppColors.brawn, for: .highlighted)
         button.addTarget(self, action: #selector(recoveryButtonTap), for: .touchUpInside)
-
+        
         return button
     }()
     private var regButton: UIButton = {
@@ -70,8 +71,8 @@ class AuthView: UIView {
         return button
     }()
     
-     var statusLabel: UILabel = {
-      let label = UILabel()
+    var statusLabel: UILabel = {
+        let label = UILabel()
         label.text = "введите email и пароль"
         label.textColor = AppColors.darkGray
         label.font = UIFont.systemFont(ofSize: 18)
@@ -86,7 +87,7 @@ class AuthView: UIView {
         super.init(frame: .zero)
         
         makeConstraints()
-
+        
     }
     
     required init?(coder: NSCoder) {
@@ -96,7 +97,7 @@ class AuthView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         makeRoundedItems()
-      
+        
     }
     
     @objc func logBattonTap() {
@@ -116,7 +117,7 @@ class AuthView: UIView {
         loginButton.layer.cornerRadius = min(loginButton.layer.frame.width , loginButton.layer.frame.height) / 2
         loginButton.layer.masksToBounds = true
         
-       
+        
         emailTextField.layer.cornerRadius = min(emailTextField.layer.frame.width , emailTextField.layer.frame.height) / 8
         emailTextField.layer.masksToBounds = true
         
@@ -130,14 +131,18 @@ class AuthView: UIView {
         addSubview(emailTextField)
         addSubview(passwordTextField)
         addSubview(loginButton)
-       
+        
         addSubview(resetPassword)
         addSubview(regButton)
         addSubview(statusLabel)
         addSubview(loginIcon)
+        addSubview(indicator)
         
+        indicator.snp.makeConstraints {
+            $0.center.equalTo(self.snp.center)
+            $0.height.width.equalTo(30)
+        }
         
-
         emailTextField.snp.makeConstraints {
             $0.center.equalTo(self.snp.center)
             $0.height.equalTo(30)
@@ -185,9 +190,9 @@ class AuthView: UIView {
             $0.bottom.equalTo(statusLabel.snp.top).offset(-40)
         }
         
-  
+        
     }
-   
+    
     
 }
 

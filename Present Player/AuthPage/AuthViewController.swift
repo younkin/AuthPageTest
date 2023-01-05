@@ -8,17 +8,11 @@
 import UIKit
 import CoreData
 
-struct EnteredData {
-    var mail: String
-    var password: String
-}
 
 class AuthViewController: UIViewController {
     
     var authViewModel = AuthViewModel()
     private lazy var customView = self.view as? AuthView
-
- 
     
     
     // MARK: - View lifecycle
@@ -32,19 +26,18 @@ class AuthViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = AppColors.gray
         addKeyboardDismissGesture()
-       
+        
         
         loginButton()
         regButton()
         recoveryButton()
     }
     override func viewWillDisappear(_ animated: Bool) {
-          super.viewWillDisappear(animated)
-          removeKeyboardDismissGesture()
-      }
+        super.viewWillDisappear(animated)
+        removeKeyboardDismissGesture()
+    }
     
     
-
     func regButton() {
         customView?.regButtonTapped = {
             let regView = RegisterViewController()
@@ -54,13 +47,6 @@ class AuthViewController: UIViewController {
     
     func loginButton() {
         self.customView?.loginButtonTapped = {
-//            self.showToast(message: "чтото пошло не так")
-            
-
-            
-//            print(self.customView?.emailTextField.text)
-//            print(self.customView?.emailTextField.validate())
-//            print(self.customView?.emailTextField.state.isEmpty)
             
             guard let emailText = self.customView?.emailTextField.text,
                   emailText.isValidEmail(),
@@ -69,32 +55,40 @@ class AuthViewController: UIViewController {
                   passwordText.isValidPassword(),
                   !passwordText.isEmpty
             else {
-                self.customView?.statusLabel.text = "заполните все поля и убедитесь, что мейл и пароль введен верно"
+                self.showToast(message: "Заполните все поля и убедитесь, что мейл и пароль введен верно", withButton: true)
                 return
             }
+            self.customView?.indicator.startAnimating()
+            self.customView?.loginButton.isEnabled = false
 
             self.loginRequest(mail: emailText, password: passwordText)
-            
         }
     }
     
     
     func loginRequest(mail: String, password: String) {
-        
-        if authViewModel.login(mail: mail, password: password) {
-            let login = LogedInView()
-            self.present(login, animated: true)
-        } else {
-            self.customView?.statusLabel.text = "неверный пароль"
+        authViewModel.login(mail: mail, password: password) { response in
+            switch response {
+            case .success:
+                let login = LogedInView()
+                self.present(login, animated: true)
+                self.customView?.indicator.stopAnimating()
+                self.customView?.loginButton.isEnabled = true
+            case .fail:
+                self.showToast(message: "Не верный пароль")
+                self.customView?.indicator.stopAnimating()
+                self.customView?.loginButton.isEnabled = true
+            case .connectionFail:
+                self.showToast(message: "Чтото пошло не так")
+                self.customView?.indicator.stopAnimating()
+                self.customView?.loginButton.isEnabled = true
+            default:
+                self.customView?.indicator.stopAnimating()
+                self.customView?.loginButton.isEnabled = true
+                break
+            }
         }
     }
-    
-    
-    func registerButton() {
-        
-        
-    }
-    
     
     func recoveryButton() {
         customView?.recoveryButtonTapped = {
@@ -102,11 +96,6 @@ class AuthViewController: UIViewController {
             self.present(recView, animated: true)
         }
     }
-    
-    
-    
-    
-    
 }
 
 

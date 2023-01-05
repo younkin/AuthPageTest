@@ -13,6 +13,8 @@
 		743AA47229647AF9005FEAF4 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA47129647AF9005FEAF4 /* RegisterViewModel.swift */; };
 		743AA47629648CEE005FEAF4 /* RecoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */; };
 		743AA47A2964E2DD005FEAF4 /* UIViewController + ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743AA4792964E2DD005FEAF4 /* UIViewController + ext.swift */; };
+		746C78A12966DAD000D8DAA6 /* UDStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746C78A02966DAD000D8DAA6 /* UDStorage.swift */; };
+		746C78A32966DB0000D8DAA6 /* DefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746C78A22966DB0000D8DAA6 /* DefaultsManager.swift */; };
 		74878BAF296037BC0095349F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BAE296037BC0095349F /* AppDelegate.swift */; };
 		74878BB1296037BC0095349F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB0296037BC0095349F /* SceneDelegate.swift */; };
 		74878BB3296037BC0095349F /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74878BB2296037BC0095349F /* AuthViewController.swift */; };
@@ -39,6 +41,8 @@
 		743AA47129647AF9005FEAF4 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		743AA47529648CEE005FEAF4 /* RecoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverViewModel.swift; sourceTree = "<group>"; };
 		743AA4792964E2DD005FEAF4 /* UIViewController + ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + ext.swift"; sourceTree = "<group>"; };
+		746C78A02966DAD000D8DAA6 /* UDStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDStorage.swift; sourceTree = "<group>"; };
+		746C78A22966DB0000D8DAA6 /* DefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsManager.swift; sourceTree = "<group>"; };
 		74878BAB296037BC0095349F /* AuthPageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuthPageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		74878BAE296037BC0095349F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		74878BB0296037BC0095349F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -113,6 +117,15 @@
 				74C3ECCD2961D4330094D247 /* LogedInView.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		746C789F2966DAAE00D8DAA6 /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				746C78A02966DAD000D8DAA6 /* UDStorage.swift */,
+				746C78A22966DB0000D8DAA6 /* DefaultsManager.swift */,
+			);
+			path = UserDefaults;
 			sourceTree = "<group>";
 		};
 		74878BA2296037BC0095349F = {
@@ -200,6 +213,7 @@
 		74878BFB2960D4350095349F /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				746C789F2966DAAE00D8DAA6 /* UserDefaults */,
 				74878BFC2960D45D0095349F /* AppColors.swift */,
 			);
 			path = Helpers;
@@ -297,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				746C78A12966DAD000D8DAA6 /* UDStorage.swift in Sources */,
 				74878BCA2960418D0095349F /* Person+CoreDataProperties.swift in Sources */,
 				74878BB9296037BC0095349F /* AuthPageTest.xcdatamodeld in Sources */,
 				740C0EF729622C6600C5E077 /* String + Extension.swift in Sources */,
@@ -315,6 +330,7 @@
 				74878C012961BE290095349F /* RegisterViewController.swift in Sources */,
 				743AA47A2964E2DD005FEAF4 /* UIViewController + ext.swift in Sources */,
 				74878BD029608DF80095349F /* CoreDataProvider.swift in Sources */,
+				746C78A32966DB0000D8DAA6 /* DefaultsManager.swift in Sources */,
 				74878C032961BE5F0095349F /* RecoverViewController.swift in Sources */,
 				74878BF02960AA1D0095349F /* AuthViewModel.swift in Sources */,
 			);

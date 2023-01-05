@@ -24,9 +24,7 @@ class CoreDataProvider {
     struct Constants {
         static let entity = "Person"
         static let sortName = "mail"
-        
     }
-
     
     init() {
         
@@ -52,47 +50,70 @@ class CoreDataProvider {
         return []
     }
     
-    func addNewUser(email: String, password: String) -> Response {
+    func addNewUser(email: String, password: String, complition: @escaping (Response) -> Void) {
+        if checkMailInBase(mail:email) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                complition(.userExist)
+            }
+            return
+        }
+        
         let object = Person()
         object.mail = email
         object.password = password
         CoreDataManager.instance.saveContext()
-        return Response.success
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            complition(.success)
+        }
+        
     }
     
     
-    func changePassword(mail: String, password: String, newPassword: String) -> Response {
+    func changePassword(mail: String, password: String, newPassword: String, complition: @escaping (Response) -> Void)
+    {
         let predicate = NSPredicate(format: "mail = %@", mail)
         fetchRequest.predicate = predicate
         do {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
             guard let person = results.first as? Person else {
-                return .userNotExist
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                     complition(.userNotExist)
+                }
+                return
             }
             guard person.password == password else {
-                return .wrongPassword
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    complition(.wrongPassword)
+                }
+                return
             }
             person.password = newPassword
             CoreDataManager.instance.saveContext()
-            return .passwordChanged
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                complition(.passwordChanged)
+                
+            }
+            return
         } catch {
             print(error)
         }
-        return .connectionFail
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            complition(.connectionFail)
+        }
     }
     
-    func checkMailInBase(mail: String) -> Response {
+   private func checkMailInBase(mail: String) -> Bool {
         let predicate = NSPredicate(format: "mail = %@", mail)
         fetchRequest.predicate = predicate
         do {
             let count = try CoreDataManager.instance.context.count(for: fetchRequest)
             if count > 0 {
-                return .userExist
+                return true
             }
         } catch {
             print(error)
         }
-        return .userNotExist
+        return false
     }
     
     
@@ -109,19 +130,28 @@ class CoreDataProvider {
     
     
     
-    func loginCheck(mail: String, password: String) -> Response {
+    func loginCheck(mail: String, password: String, completion: @escaping (Response) -> Void) {
         let predicate = NSPredicate(format: "mail = %@ AND password = %@", mail, password)
         fetchRequest.predicate = predicate
         do {
             let count = try CoreDataManager.instance.context.count(for: fetchRequest)
             if count > 0 {
-                return .success
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    completion(.success)
+                }
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    completion(.fail)
+                }
             }
         } catch {
             print(error)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                completion(.fail)
+            }
         }
-        return .fail
     }
+    
     
     
     
