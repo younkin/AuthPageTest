@@ -17,6 +17,8 @@ class AuthViewModel {
     
     func login(mail: String, password: String, completion: @escaping (Response) -> Void) {
         coreDataProvider.loginCheck(mail: mail, password: password) { response in
+        
+            let response = Response(result: response.result, token: response.token)
             completion(response)
         }
     }

@@ -52,6 +52,7 @@ class LogedInView: UIViewController {
     
     @objc func logoutButtonTap() {
 //        loginButtonTap?()
+        DefaultsManager.isLogged = ""
         dismiss(animated: true)
     }
     

@@ -12,9 +12,7 @@ class CoreDataManager {
     
     static let instance = CoreDataManager()
     
-    private init() {
-        
-    }
+    private init() {}
     
     lazy var context: NSManagedObjectContext = {
         persistentContainer.viewContext

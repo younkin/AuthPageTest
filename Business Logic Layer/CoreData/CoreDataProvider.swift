@@ -9,14 +9,19 @@ import UIKit
 import CoreData
 
 
-enum Response {
-    case success
-    case fail
-    case userNotExist
-    case userExist
-    case connectionFail
-    case wrongPassword
-    case passwordChanged
+struct Response {
+    var result: Result
+    var token: String?
+    
+    enum Result {
+        case success
+        case fail
+        case userNotExist
+        case userExist
+        case connectionFail
+        case wrongPassword
+        case passwordChanged
+    }
 }
 
 class CoreDataProvider {
@@ -26,9 +31,7 @@ class CoreDataProvider {
         static let sortName = "mail"
     }
     
-    init() {
-        
-    }
+    private init() {}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -38,6 +41,8 @@ class CoreDataProvider {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
         return fetchRequest
     }()
+    
+    
     
     func getAllUsers() -> [Person] {
         do {
@@ -53,7 +58,7 @@ class CoreDataProvider {
     func addNewUser(email: String, password: String, complition: @escaping (Response) -> Void) {
         if checkMailInBase(mail:email) {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                complition(.userExist)
+                complition(Response(result: .userExist, token: nil))
             }
             return
         }
@@ -62,8 +67,10 @@ class CoreDataProvider {
         object.mail = email
         object.password = password
         CoreDataManager.instance.saveContext()
+        //        let token = UUID().uuidString
+        let token = "2ed332edfrssr"
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            complition(.success)
+            complition(Response(result: .success, token: token))
         }
         
     }
@@ -77,32 +84,32 @@ class CoreDataProvider {
             let results = try CoreDataManager.instance.context.fetch(fetchRequest)
             guard let person = results.first as? Person else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                     complition(.userNotExist)
+                    complition(Response(result: .userNotExist))
                 }
                 return
             }
             guard person.password == password else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    complition(.wrongPassword)
+                    
+                    complition(Response(result: .wrongPassword))
                 }
                 return
             }
             person.password = newPassword
             CoreDataManager.instance.saveContext()
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                complition(.passwordChanged)
-                
+                complition(Response(result: .passwordChanged))
             }
             return
         } catch {
             print(error)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            complition(.connectionFail)
+            complition(Response(result: .connectionFail))
         }
     }
     
-   private func checkMailInBase(mail: String) -> Bool {
+    private func checkMailInBase(mail: String) -> Bool {
         let predicate = NSPredicate(format: "mail = %@", mail)
         fetchRequest.predicate = predicate
         do {
@@ -121,33 +128,34 @@ class CoreDataProvider {
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         do {
             try CoreDataManager.instance.context.execute(deleteRequest)
-            return .success
+            return Response(result: .success)
         } catch {
             print(error)
         }
-        return .fail
+        return Response(result: .fail)
     }
     
     
     
-    func loginCheck(mail: String, password: String, completion: @escaping (Response) -> Void) {
+    func loginCheck(mail: String, password: String, complition: @escaping (Response) -> Void) {
         let predicate = NSPredicate(format: "mail = %@ AND password = %@", mail, password)
         fetchRequest.predicate = predicate
         do {
             let count = try CoreDataManager.instance.context.count(for: fetchRequest)
             if count > 0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    completion(.success)
+                    let token = "2ed332edfrssr"
+                    complition(Response(result: .success, token: token))
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    completion(.fail)
+                    complition(Response(result: .fail))
                 }
             }
         } catch {
             print(error)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                completion(.fail)
+                complition(Response(result: .fail))
             }
         }
     }

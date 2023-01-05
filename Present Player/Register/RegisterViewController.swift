@@ -113,7 +113,7 @@ class RegisterViewController: UIViewController {
         self.regButton.isEnabled = false
         
         registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) { response in
-            switch response {
+            switch response.result {
             case .success:
                 self.showToast(message: "Вы зарегистрировались")
                 self.indicator.stopAnimating()

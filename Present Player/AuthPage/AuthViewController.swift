@@ -25,9 +25,9 @@ class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = AppColors.gray
+        setupUI()
+        
         addKeyboardDismissGesture()
-        
-        
         loginButton()
         regButton()
         recoveryButton()
@@ -35,6 +35,16 @@ class AuthViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         removeKeyboardDismissGesture()
+    }
+    
+    func setupUI() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            guard DefaultsManager.isLogged == "" else {
+                let login = LogedInView()
+                self.present(login, animated: true)
+                return
+            }
+        }
     }
     
     
@@ -61,15 +71,17 @@ class AuthViewController: UIViewController {
             self.customView?.indicator.startAnimating()
             self.customView?.loginButton.isEnabled = false
 
-            self.loginRequest(mail: emailText, password: passwordText)
+            self.authorization(mail: emailText, password: passwordText)
         }
     }
     
     
-    func loginRequest(mail: String, password: String) {
+    func authorization(mail: String, password: String) {
         authViewModel.login(mail: mail, password: password) { response in
-            switch response {
+            switch response.result {
             case .success:
+                guard let token = response.token else {return}
+                DefaultsManager.isLogged = token
                 let login = LogedInView()
                 self.present(login, animated: true)
                 self.customView?.indicator.stopAnimating()
