@@ -31,9 +31,7 @@ class CoreDataProvider {
         static let sortName = "mail"
     }
     
-    init() {
-        
-    }
+    private init() {}
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,6 +41,8 @@ class CoreDataProvider {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Constants.entity)
         return fetchRequest
     }()
+    
+    
     
     func getAllUsers() -> [Person] {
         do {
@@ -67,7 +67,7 @@ class CoreDataProvider {
         object.mail = email
         object.password = password
         CoreDataManager.instance.saveContext()
-//        let token = UUID().uuidString
+        //        let token = UUID().uuidString
         let token = "2ed332edfrssr"
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             complition(Response(result: .success, token: token))
@@ -98,21 +98,18 @@ class CoreDataProvider {
             person.password = newPassword
             CoreDataManager.instance.saveContext()
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-             
                 complition(Response(result: .passwordChanged))
-                
             }
             return
         } catch {
             print(error)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-        
             complition(Response(result: .connectionFail))
         }
     }
     
-   private func checkMailInBase(mail: String) -> Bool {
+    private func checkMailInBase(mail: String) -> Bool {
         let predicate = NSPredicate(format: "mail = %@", mail)
         fetchRequest.predicate = predicate
         do {
@@ -148,7 +145,7 @@ class CoreDataProvider {
             if count > 0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     let token = "2ed332edfrssr"
-                        complition(Response(result: .success, token: token))
+                    complition(Response(result: .success, token: token))
                 }
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
