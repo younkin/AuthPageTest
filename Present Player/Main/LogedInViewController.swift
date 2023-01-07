@@ -9,9 +9,9 @@
 import UIKit
 import SnapKit
 
-class LogedInView: UIViewController {
+class LogedInViewController: UIViewController {
     
-//    var loginButtonTap: (() -> Void)?
+    var logedInViewModel: LogedInViewModelInterface = LogedInViewModel()
     
     private var loginIcon: UIImageView = {
         let image = UIImageView()
@@ -51,10 +51,12 @@ class LogedInView: UIViewController {
   
     
     @objc func logoutButtonTap() {
-//        loginButtonTap?()
-        DefaultsManager.isLogged = ""
+        // TODO: make callback
+        
+        self.logedInViewModel.logout()
         dismiss(animated: true)
     }
+    
     
     func makeRoundedItems() {
         

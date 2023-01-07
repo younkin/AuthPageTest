@@ -15,7 +15,7 @@ class RecoverViewController: UIViewController {
     
     
     
-    var recoverViewModel = RecoverViewModel()
+    var recoverViewModel: RecoverViewModelInterface = RecoverViewModel()
     let indicator = UIActivityIndicatorView(style: .medium)
     
     
@@ -98,7 +98,7 @@ class RecoverViewController: UIViewController {
     }
     
     @objc func recСonfirm() {
-        
+        // TODO: replace to viewModel
         guard let emailText = emailTextField.text,
               !emailText.isEmpty,
               emailText.isValidEmail(),
@@ -115,29 +115,35 @@ class RecoverViewController: UIViewController {
         self.indicator.startAnimating()
         self.recButton.isEnabled = false
         
-        recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText) { response in
-            switch response.result {
-            case .userNotExist:
-                self.showToast(message: "Такого пользователя не существует")
-                self.indicator.stopAnimating()
-                self.recButton.isEnabled = true
-            case .connectionFail:
-                self.showToast(message: "потеря соединения")
-                self.indicator.stopAnimating()
-                self.recButton.isEnabled = true
-            case .wrongPassword:
-                self.showToast(message: "Пароль не верный")
-                self.indicator.stopAnimating()
-                self.recButton.isEnabled = true
-            case .passwordChanged:
+        recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .success:
                 self.showToast(message: "Пароль изменен")
                 self.indicator.stopAnimating()
                 self.recButton.isEnabled = true
-            default:
-                self.showToast(message: "чтото пошло не так")
-                self.indicator.stopAnimating()
-                self.recButton.isEnabled = true
+            case .failure(let failure):
+                // TODO: handle
+                break
             }
+//            switch response.result {
+//            case .userNotExist:
+//                self.showToast(message: "Такого пользователя не существует")
+//                self.indicator.stopAnimating()
+//                self.recButton.isEnabled = true
+//            case .connectionFail:
+//                self.showToast(message: "потеря соединения")
+//                self.indicator.stopAnimating()
+//                self.recButton.isEnabled = true
+//            case .wrongPassword:
+//                self.showToast(message: "Пароль не верный")
+//                self.indicator.stopAnimating()
+//                self.recButton.isEnabled = true
+//            default:
+//                self.showToast(message: "чтото пошло не так")
+//                self.indicator.stopAnimating()
+//                self.recButton.isEnabled = true
+//            }
         }
         
         

@@ -10,8 +10,8 @@ import CoreData
 
 
 class AuthViewController: UIViewController {
-    
-    var authViewModel = AuthViewModel()
+//    var recoverViewModel: RecoverViewModelInterface = RecoverViewModel()
+    var authViewModel: AuthViewModelInterface = AuthViewModel()
     private lazy var customView = self.view as? AuthView
     
     
@@ -39,8 +39,8 @@ class AuthViewController: UIViewController {
     
     func setupUI() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            guard DefaultsManager.isLogged == "" else {
-                let login = LogedInView()
+            guard !DefaultsManager.isLoggedIn else {
+                let login = LogedInViewController()
                 self.present(login, animated: true)
                 return
             }
@@ -56,48 +56,47 @@ class AuthViewController: UIViewController {
     }
     
     func loginButton() {
-        self.customView?.loginButtonTapped = {
-            
-            guard let emailText = self.customView?.emailTextField.text,
+        self.customView?.loginButtonTapped = { [weak self] in
+            guard let emailText = self?.customView?.emailTextField.text,
                   emailText.isValidEmail(),
                   !emailText.isEmpty,
-                  let passwordText = self.customView?.passwordTextField.text,
+                  let passwordText = self?.customView?.passwordTextField.text,
                   passwordText.isValidPassword(),
                   !passwordText.isEmpty
             else {
-                self.showToast(message: "Заполните все поля и убедитесь, что мейл и пароль введен верно", withButton: true)
+                self?.showToast(message: "Заполните все поля и убедитесь, что мейл и пароль введен верно")
                 return
             }
-            self.customView?.indicator.startAnimating()
-            self.customView?.loginButton.isEnabled = false
+            self?.customView?.indicator.startAnimating()
+            self?.customView?.loginButton.isEnabled = false
 
-            self.authorization(mail: emailText, password: passwordText)
+            self?.authorization(mail: emailText, password: passwordText)
         }
     }
     
     
     func authorization(mail: String, password: String) {
-        authViewModel.login(mail: mail, password: password) { response in
-            switch response.result {
+        authViewModel.login(mail: mail, password: password) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+            self.customView?.indicator.stopAnimating()
+            self.customView?.loginButton.isEnabled = true
+            switch response {
             case .success:
-                guard let token = response.token else {return}
-                DefaultsManager.isLogged = token
-                let login = LogedInView()
+                let login = LogedInViewController()
                 self.present(login, animated: true)
-                self.customView?.indicator.stopAnimating()
-                self.customView?.loginButton.isEnabled = true
-            case .fail:
-                self.showToast(message: "Не верный пароль")
-                self.customView?.indicator.stopAnimating()
-                self.customView?.loginButton.isEnabled = true
-            case .connectionFail:
-                self.showToast(message: "Чтото пошло не так")
-                self.customView?.indicator.stopAnimating()
-                self.customView?.loginButton.isEnabled = true
-            default:
-                self.customView?.indicator.stopAnimating()
-                self.customView?.loginButton.isEnabled = true
-                break
+            case .failure(let error):
+                switch error {
+                case .wrongCredentials:
+                    self.showToast(message: "Неверный логин или пароль")
+                case .unknown:
+                    self.showToast(message: "Что-то пошло не так")
+                case .connectionLost:
+                    self.showToast(message: "Интернет-соединение потеряно", style: .active( { [weak self] in
+                        self?.authViewModel.retry()
+                    }))
+                }
             }
         }
     }

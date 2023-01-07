@@ -10,9 +10,9 @@ import Foundation
 import CoreData
 
 @objc(Person)
-public class Person: NSManagedObject {
+public final class Person: NSManagedObject {
     convenience init() {
-        self.init(entity: CoreDataManager.instance.entityForName(entityName: "Person"), insertInto: CoreDataManager.instance.context)
+        self.init(entity: CoreDataProvider.instance.entityForName(entityName: "Person"), insertInto: CoreDataProvider.instance.context)
     }
 
 }

@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 
-class AuthView: UIView {
+final class AuthView: UIView {
     
     var loginButtonTapped: (() -> Void)?
     var regButtonTapped: (() -> Void)?

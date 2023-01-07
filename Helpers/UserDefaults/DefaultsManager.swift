@@ -9,7 +9,7 @@ import Foundation
 
 final class DefaultsManager {
     
-    @UDStorage(key: "authToken", defaultValue: "")
-    static var isLogged: String
+    @UDStorage(key: "isLoggedIn", defaultValue: false)
+    static var isLoggedIn: Bool
 
 }

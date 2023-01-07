@@ -12,7 +12,7 @@ import SnapKit
 class RegisterViewController: UIViewController {
     
     
-    var registerViewModel = RegisterViewModel()
+    var registerViewModel: RegisterViewModelInterface = RegisterViewModel()
     let indicator = UIActivityIndicatorView(style: .medium)
     
     private var loginIcon: UIImageView = {
@@ -94,7 +94,7 @@ class RegisterViewController: UIViewController {
     
     @objc func regСonfirm() {
         
-        
+
         guard let emailText = emailTextField.text,
               !emailText.isEmpty,
               emailText.isValidEmail(),
@@ -112,27 +112,33 @@ class RegisterViewController: UIViewController {
         self.indicator.startAnimating()
         self.regButton.isEnabled = false
         
-        registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) { response in
-            switch response.result {
+        registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) { [weak self] response in
+            guard let self else { return }
+            switch response {
             case .success:
                 self.showToast(message: "Вы зарегистрировались")
                 self.indicator.stopAnimating()
                 self.regButton.isEnabled = true
-            case .fail:
-                self.showToast(message: "Не верный пароль")
-                self.indicator.stopAnimating()
-                self.regButton.isEnabled = true
-            case .connectionFail:
-                self.showToast(message: "Чтото пошло не так")
-                self.indicator.stopAnimating()
-                self.regButton.isEnabled = true
-            case .userExist:
-                self.showToast(message: "Такой пользователь уже существует")
-                self.indicator.stopAnimating()
-                self.regButton.isEnabled = true
-            default:
+            case .failure(let error):
+                // TODO: handle
                 break
+                
             }
+//            case .fail:
+//                self.showToast(message: "Не верный пароль")
+//                self.indicator.stopAnimating()
+//                self.regButton.isEnabled = true
+//            case .connectionFail:
+//                self.showToast(message: "Чтото пошло не так")
+//                self.indicator.stopAnimating()
+//                self.regButton.isEnabled = true
+//            case .userExist:
+//                self.showToast(message: "Такой пользователь уже существует")
+//                self.indicator.stopAnimating()
+//                self.regButton.isEnabled = true
+//            default:
+//                break
+//            }
         }
     }
     

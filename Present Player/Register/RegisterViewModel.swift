@@ -8,14 +8,27 @@
 import Foundation
 
 
-class RegisterViewModel {
+protocol RegisterViewModelInterface {
+    func createUser(mail:String, password:String, repPassword:String, complition: @escaping (Result<Void, RegisterViewModelError>) -> Void)
+}
+
+enum RegisterViewModelError: Error {
+    case unknown
+}
+
+final class RegisterViewModel: RegisterViewModelInterface {
     
-    var coreDataProvider = CoreDataProvider()
+    private var authManager = AuthManager()
     
-    func createUser(mail:String, password:String, repPassword:String, complition:@escaping (Response) -> Void) {
+    func createUser(mail:String, password:String, repPassword:String, complition: @escaping (Result<Void, RegisterViewModelError>) -> Void) {
         
-        coreDataProvider.addNewUser(email: mail, password: password) { response in
-            complition(response)
+        authManager.addNewUser(email: mail, password: password) { response in
+            switch response {
+            case .success:
+                complition(.success(()))
+            case .failure(let failure):
+                complition(.failure(.unknown))
+            }
         }
         
     }
