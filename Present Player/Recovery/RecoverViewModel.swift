@@ -8,76 +8,73 @@
 import Foundation
 
 protocol RecoverViewModelInterface {
-    func createUser(mail: String, password: String, repPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void)
-    func login(mail: String, password: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void)
+//    func createUser(mail: String, password: String, repPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void)
     func changePassword(mail:String, oldPassword: String, newPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void)
+    func inputDataCheck (email:String, password: String, repPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void) -> Bool
+    func retry()
 }
 
 enum RecoverViewModelError: Error {
     case createError
     case wrongCredentials
     case unknown
-    case passwordReplicaIncorrect
+    case emailSpellingMistake
+    case passwordSpellingMistake
+    case userNotExist
+    case networkError
 }
 
 final class RecoverViewModel: RecoverViewModelInterface {
+   
+    
     
     var authManager = AuthManager()
-    
-    func inputDataCheck () {
-        
+    private var lastAction: (() -> (Void))?
+
+    func retry() {
+        lastAction?()
     }
     
-    func createUser(mail:String, password:String, repPassword:String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void) {
-        guard password == repPassword else {
-            completion(.failure(.passwordReplicaIncorrect))
-            return
+    func inputDataCheck (email:String, password: String, repPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void) -> Bool {
+        guard email.isValidEmail() else {
+            completion(.failure(.emailSpellingMistake))
+            return false
         }
-        authManager.addNewUser(email: mail, password: password) { response in
-            switch response {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                switch error {
-                case .duplicateUser:
-                    completion(.failure(.createError))
-                default:
-                    completion(.failure(.unknown))
-                }
-            }
+        guard password.isValidPassword(),
+           repPassword.isValidPassword() else {
+            completion(.failure(.passwordSpellingMistake))
+            return false
         }
+        completion(.success(()))
+        return true
     }
+ 
     
-    
-    func login(mail: String, password: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void) {
-        authManager.authorize(mail: mail, password: password) { response in
-            switch response {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                switch error {
-                case .wrongPassword:
-                    completion(.failure(.wrongCredentials))
-                default:
-                    completion(.failure(.unknown))
-                }
-            }
-        }
-    }
+   
     
     func changePassword(mail:String, oldPassword: String, newPassword: String, completion: @escaping (Result<Void, RecoverViewModelError>) -> Void) {
-        authManager.changePassword(mail: mail, password: oldPassword, newPassword: newPassword) { response in
-            switch response {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                switch error {
-                default:
-                    completion(.failure(.unknown))
+        let action: (() -> (Void))? = { [weak authManager] in
+            authManager?.changePassword(mail: mail, password: oldPassword, newPassword: newPassword) { response in
+                switch response {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    switch error {
+                    case .wrongPassword:
+                        completion(.failure(.wrongCredentials))
+                    case.userNotExist:
+                        completion(.failure(.wrongCredentials))
+                    default:
+                        completion(.failure(.unknown))
+                    }
                 }
             }
         }
+        
+        lastAction = action
+        action?()
     }
+  
     
 }
 

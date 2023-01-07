@@ -100,58 +100,72 @@ class RecoverViewController: UIViewController {
     @objc func recСonfirm() {
         // TODO: replace to viewModel
         guard let emailText = emailTextField.text,
-              !emailText.isEmpty,
-              emailText.isValidEmail(),
               let passwordText = passwordTextField.text,
-              !passwordText.isEmpty,
-              passwordText.isValidPassword(),
-              let repPasswordText = repeatPasswordTextField.text,
-              !repPasswordText.isEmpty,
-              repPasswordText.isValidPassword()
+              let repPasswordText = repeatPasswordTextField.text
         else {
-            self.statusLabel.text = "заполните все поля и убедитесь, что мейл и пароль введен верно"
             return
         }
+        
+        let inputChack = recoverViewModel.inputDataCheck(email: emailText, password: passwordText, repPassword: repPasswordText) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .failure(let failure):
+                switch failure {
+                case .emailSpellingMistake:
+                    self.showToast(message: "Введите правильный емейл. ex: mail@mail.com")
+                    break
+                case .passwordSpellingMistake:
+                    self.showToast(message: "Пароль должен содержать только английские буквы и цифры.")
+                    break
+                default:
+                    break
+                    
+                }
+            case .success(): break
+        
+            }
+            
+        }
+        guard inputChack else{return}
+        
         self.indicator.startAnimating()
         self.recButton.isEnabled = false
         
         recoverViewModel.changePassword(mail: emailText, oldPassword: passwordText, newPassword: repPasswordText) { [weak self] response in
             guard let self else { return }
+            self.indicator.stopAnimating()
+            self.recButton.isEnabled = true
             switch response {
+                
             case .success:
                 self.showToast(message: "Пароль изменен")
-                self.indicator.stopAnimating()
-                self.recButton.isEnabled = true
+                
             case .failure(let failure):
-                // TODO: handle
+                switch failure {
+                case .userNotExist:
+                    self.showToast(message: "Такого пользователя не существует")
+                case .networkError:
+                    self.showToast(message: "Интернет-соединение потеряно", style: .active( { [weak self] in
+                        self?.recoverViewModel.retry()
+                    }))
+                case .wrongCredentials:
+                    self.showToast(message: "Неверный пароль")
+                case .unknown:
+                    self.showToast(message: "Что-то пошло не так")
+                default:
+                    break
+                }
+            default:
                 break
             }
-//            switch response.result {
-//            case .userNotExist:
-//                self.showToast(message: "Такого пользователя не существует")
-//                self.indicator.stopAnimating()
-//                self.recButton.isEnabled = true
-//            case .connectionFail:
-//                self.showToast(message: "потеря соединения")
-//                self.indicator.stopAnimating()
-//                self.recButton.isEnabled = true
-//            case .wrongPassword:
-//                self.showToast(message: "Пароль не верный")
-//                self.indicator.stopAnimating()
-//                self.recButton.isEnabled = true
-//            default:
-//                self.showToast(message: "чтото пошло не так")
-//                self.indicator.stopAnimating()
-//                self.recButton.isEnabled = true
-//            }
         }
         
-        
-        
-        
-        
-        
     }
+    
+    
+    
+    
+    
     
     func makeRoundedItems() {
         

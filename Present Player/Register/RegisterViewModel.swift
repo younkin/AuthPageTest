@@ -9,29 +9,47 @@ import Foundation
 
 
 protocol RegisterViewModelInterface {
-    func createUser(mail:String, password:String, repPassword:String, complition: @escaping (Result<Void, RegisterViewModelError>) -> Void)
+    func createUser(mail:String, password:String, repPassword:String, completion: @escaping (Result<Void, RegisterViewModelError>) -> Void)
 }
 
 enum RegisterViewModelError: Error {
     case unknown
+    case passwordReplicaIncorrect
+    case createError
+    case userNotExist
+    case networkError
 }
 
 final class RegisterViewModel: RegisterViewModelInterface {
     
     private var authManager = AuthManager()
     
-    func createUser(mail:String, password:String, repPassword:String, complition: @escaping (Result<Void, RegisterViewModelError>) -> Void) {
-        
-        authManager.addNewUser(email: mail, password: password) { response in
-            switch response {
-            case .success:
-                complition(.success(()))
-            case .failure(let failure):
-                complition(.failure(.unknown))
+    
+        func createUser(mail:String, password:String, repPassword:String, completion: @escaping (Result<Void, RegisterViewModelError>) -> Void) {
+            guard password == repPassword else {
+                completion(.failure(.passwordReplicaIncorrect))
+                return
+            }
+            authManager.addNewUser(email: mail, password: password) { response in
+                switch response {
+                case .success:
+                    completion(.success(()))
+                case .failure(let error):
+                    switch error {
+                    case .duplicateUser:
+                        completion(.failure(.createError))
+                    case .userNotExist:
+                        completion(.failure(.userNotExist))
+                    case .networkError:
+                        completion(.failure(.networkError))
+                    default:
+                        completion(.failure(.unknown))
+                    }
+                }
             }
         }
-        
-    }
+
+
     
     
 }
