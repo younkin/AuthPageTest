@@ -10,7 +10,7 @@ import CoreData
 
 
 class AuthViewController: UIViewController {
-//    var recoverViewModel: RecoverViewModelInterface = RecoverViewModel()
+    //    var recoverViewModel: RecoverViewModelInterface = RecoverViewModel()
     var authViewModel: AuthViewModelInterface = AuthViewModel()
     private lazy var customView = self.view as? AuthView
     
@@ -56,22 +56,38 @@ class AuthViewController: UIViewController {
     }
     
     func loginButton() {
-        self.customView?.loginButtonTapped = { [weak self] in
-            guard let emailText = self?.customView?.emailTextField.text,
-                  emailText.isValidEmail(),
-                  !emailText.isEmpty,
-                  let passwordText = self?.customView?.passwordTextField.text,
-                  passwordText.isValidPassword(),
-                  !passwordText.isEmpty
-            else {
-                self?.showToast(message: "Заполните все поля и убедитесь, что мейл и пароль введен верно")
-                return
-            }
-            self?.customView?.indicator.startAnimating()
-            self?.customView?.loginButton.isEnabled = false
-
-            self?.authorization(mail: emailText, password: passwordText)
+        
+        guard let emailText = self.customView?.emailTextField.text,
+              let passwordText = self.customView?.passwordTextField.text
+        else {
+            return
         }
+        
+        let inputChack = authViewModel.inputDataCheck(email: emailText, password: passwordText) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .failure(let failure):
+                switch failure {
+                case .emailSpellingMistake:
+                    self.showToast(message: "Введите правильный емейл. ex: mail@mail.com")
+                    break
+                case .passwordSpellingMistake:
+                    self.showToast(message: "Пароль должен содержать только английские буквы и цифры.")
+                    break
+                default:
+                    break
+                }
+            case .success(): break
+                
+            }
+        }
+        
+        guard inputChack else{return}
+        self.customView?.indicator.startAnimating()
+        self.customView?.loginButton.isEnabled = false
+        
+        self.authorization(mail: emailText, password: passwordText)
+        
     }
     
     

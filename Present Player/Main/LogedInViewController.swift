@@ -51,7 +51,7 @@ class LogedInViewController: UIViewController {
   
     
     @objc func logoutButtonTap() {
-        // TODO: make callback
+    
         
         self.logedInViewModel.logout()
         dismiss(animated: true)

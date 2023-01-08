@@ -93,54 +93,64 @@ class RegisterViewController: UIViewController {
     }
     
     @objc func regСonfirm() {
-        
-
         guard let emailText = emailTextField.text,
-              !emailText.isEmpty,
-              emailText.isValidEmail(),
               let passwordText = passwordTextField.text,
-              !passwordText.isEmpty,
-              passwordText.isValidPassword(),
-              let repPasswordText = repeatPasswordTextField.text,
-              !repPasswordText.isEmpty,
-              repPasswordText.isValidPassword(),
-              passwordText == repPasswordText
+              let repPasswordText = repeatPasswordTextField.text
         else {
-            self.statusLabel.text = "заполните все поля и убедитесь, что пароли совпадают"
             return
         }
+        
+        let inputChack = registerViewModel.inputDataCheck(email: emailText, password: passwordText, repPassword: repPasswordText) { [weak self] response in
+            guard let self else { return }
+            switch response {
+            case .failure(let failure):
+                switch failure {
+                case .emailSpellingMistake:
+                    self.showToast(message: "Введите правильный емейл. ex: mail@mail.com")
+                    break
+                case .passwordSpellingMistake:
+                    self.showToast(message: "Пароль должен содержать только английские буквы и цифры.")
+                    break
+                case .passwordReplicaIncorrect:
+                    self.showToast(message: "Пароли не совпадают")
+                default:
+                    break
+                }
+            case .success(): break
+                
+            }
+        }
+        
+        guard inputChack else{return}
+        
         self.indicator.startAnimating()
         self.regButton.isEnabled = false
         
         registerViewModel.createUser(mail: emailText, password: passwordText, repPassword: repPasswordText) { [weak self] response in
             guard let self else { return }
+            self.indicator.stopAnimating()
+            self.regButton.isEnabled = true
             switch response {
             case .success:
                 self.showToast(message: "Вы зарегистрировались")
-                self.indicator.stopAnimating()
-                self.regButton.isEnabled = true
-            case .failure(let error):
-                // TODO: handle
-                break
                 
+            case .failure(let failure):
+                switch failure {
+                case .duplicateUser:
+                    self.showToast(message: "такой юзер существует")
+                case .networkError:
+                    self.showToast(message: "Интернет-соединение потеряно", style: .active( { [weak self] in
+                        self?.registerViewModel.retry()
+                    }))
+                case .unknown:
+                    self.showToast(message: "Что-то пошло не так")
+                default:
+                    break
+                }
             }
-//            case .fail:
-//                self.showToast(message: "Не верный пароль")
-//                self.indicator.stopAnimating()
-//                self.regButton.isEnabled = true
-//            case .connectionFail:
-//                self.showToast(message: "Чтото пошло не так")
-//                self.indicator.stopAnimating()
-//                self.regButton.isEnabled = true
-//            case .userExist:
-//                self.showToast(message: "Такой пользователь уже существует")
-//                self.indicator.stopAnimating()
-//                self.regButton.isEnabled = true
-//            default:
-//                break
-//            }
         }
     }
+    
     
     @objc func exitTapped() {
         

@@ -98,7 +98,7 @@ class RecoverViewController: UIViewController {
     }
     
     @objc func recСonfirm() {
-        // TODO: replace to viewModel
+     
         guard let emailText = emailTextField.text,
               let passwordText = passwordTextField.text,
               let repPasswordText = repeatPasswordTextField.text

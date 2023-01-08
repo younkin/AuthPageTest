@@ -11,6 +11,7 @@ import UIKit
 
 protocol AuthViewModelInterface {
     func login(mail: String, password: String, completion: @escaping (Result<Void, AuthViewModelError>) -> Void)
+    func inputDataCheck (email:String, password: String, completion: @escaping (Result<Void, RegisterViewModelError>) -> Void) -> Bool
     func retry()
 }
 
@@ -25,6 +26,20 @@ final class AuthViewModel: AuthViewModelInterface {
     private var authManager = AuthManager()
     private var lastAction: (() -> (Void))?
     
+    
+    func inputDataCheck (email:String, password: String, completion: @escaping (Result<Void, RegisterViewModelError>) -> Void) -> Bool {
+        guard email.isValidEmail() else {
+            completion(.failure(.emailSpellingMistake))
+            return false
+        }
+        guard password.isValidPassword() else {
+            completion(.failure(.passwordSpellingMistake))
+            return false
+        }
+     
+        completion(.success(()))
+        return true
+    }
     
     func login(mail: String, password: String, completion: @escaping (Result<Void, AuthViewModelError>) -> Void) {
         let action: (() -> (Void))? = { [weak authManager] in
